@@ -1,27 +1,33 @@
+import { Ability } from "./Ability"
+import { Item } from "./Item"
+import { Move } from "./Move"
+import { Spread } from "./Spread"
+import { TeamMate } from "./TeamMate"
+
 export interface PokemonProps {
     Name: string; 
-    Abilities: object;
+    Abilities: Array<Ability>;
     Checks_And_Counters: object;
     Happiness: object;
-    Items: object;
-    Moves: object;
+    Items: Array<Item>;
+    Moves: Array<Move>;
     Raw_Count:number;
-    Spreads: object;
-    Teammates: object;
+    Spreads: Array<Spread>;
+    TeamMates: Array<TeamMate>;
     Viability_Ceiling: Array<number>
     Usage: number;
 }
 
 export class Pokemon implements PokemonProps {
     Name: string; 
-    Abilities: object;
+    Abilities: Array<Ability>;
     Checks_And_Counters: object;
     Happiness: object;
-    Items: object;
-    Moves: object;
+    Items: Array<Item>;
+    Moves: Array<Move>;
     Raw_Count:number;
-    Spreads: object;
-    Teammates: object;
+    Spreads: Array<Spread>;
+    TeamMates: Array<TeamMate>;
     Viability_Ceiling: Array<number>
     Usage: number;
 
@@ -34,7 +40,7 @@ export class Pokemon implements PokemonProps {
         this.Moves = parameters.Moves;
         this.Raw_Count = parameters.Raw_Count;
         this.Spreads = parameters.Spreads;
-        this.Teammates = parameters.Teammates;
+        this.TeamMates = parameters.TeamMates;
         this.Viability_Ceiling = parameters.Viability_Ceiling;
         this.Usage = parameters.Usage;
     }

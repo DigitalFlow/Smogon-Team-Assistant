@@ -8,6 +8,11 @@ import { Nav } from "react-bootstrap";
 import { NavItem } from "react-bootstrap";
 import { MenuItem } from "react-bootstrap";
 import { NavDropdown } from "react-bootstrap";
+import { Ability } from "../model/Ability";
+import { Item } from "../model/Item";
+import { Move } from "../model/Move";
+import { Spread } from "../model/Spread";
+import { TeamMate } from "../model/TeamMate";
 
 export interface AppProps { }
 
@@ -59,19 +64,44 @@ export class App extends React.Component<AppProps, AppState> {
 
       for(let entry in parsed.data)
       {
-            var data = parsed.data[entry];
+            let data = parsed.data[entry];
+
+            let abilities = new Array<Ability>();
+            Object.keys(data.Abilities).forEach(key => {
+                abilities.push(new Ability({name: key, usageRate: data.Abilities[key]}));
+            });
+
+            let items = new Array<Item>();
+            Object.keys(data.Items).forEach(key => {
+                items.push(new Item({name: key, usageRate: data.Items[key]}));
+            });
+
+            let moves = new Array<Move>();
+            Object.keys(data.Moves).forEach(key => {
+                moves.push(new Move({name: key, usageRate: data.Moves[key]}));
+            });
+
+            let spreads = new Array<Spread>();
+            Object.keys(data.Spreads).forEach(key => {
+                spreads.push(new Spread({name: key, usageRate: data.Spreads[key]}));
+            });
+
+            let teamMates = new Array<TeamMate>();
+            Object.keys(data.Teammates).forEach(key => {
+                teamMates.push(new TeamMate({name: key, usageRate: data.Teammates[key]}));
+            });
 
             // We need to create an object using the constructor, otherwise its functions won't be available
             let pokemon = new Pokemon({
                 Name: entry,
-                Abilities: data.Abilities,
+                Abilities: abilities,
                 Checks_And_Counters: data["Checks and Counters"],
                 Happiness: data.Happiness,
-                Items: data.Items,
-                Moves: data.Moves,
+                Items: items,
+                Moves: moves,
                 Raw_Count: data["Raw count"],
-                Spreads: data.Spreads,
-                Teammates: data.Teammates,
+                Spreads: spreads,
+                TeamMates: teamMates,
                 Usage: data.usage,
                 Viability_Ceiling: data["Viability Ceiling"] 
             });
@@ -96,11 +126,11 @@ export class App extends React.Component<AppProps, AppState> {
                 </Navbar.Header>
                 <Navbar.Collapse>
                 <Nav>
-                    <NavItem eventKey={1} href="#">Stat Overview</NavItem>
-                    <NavItem eventKey={2} href="#">Team Builder</NavItem>
-                    <NavDropdown eventKey={3} title="Load file" id="basic-nav-dropdown">
-                    <input type='file' id='fileinput' ref={(input) => { this.fileInput = input; }}/>
-                    <input type='button' id='btnLoad' value='Load' onClick={this.loadFile}/>
+                    <NavItem href="#">Stat Overview</NavItem>
+                    <NavItem href="#">Team Builder</NavItem>
+                    <NavDropdown title="Load file" id="basic-nav-dropdown">
+                        <input type='file' id='fileinput' ref={(input) => { this.fileInput = input; }}/>
+                        <input type='button' id='btnLoad' value='Load' onClick={this.loadFile}/>
                     </NavDropdown>
                 </Nav>
                 </Navbar.Collapse>
