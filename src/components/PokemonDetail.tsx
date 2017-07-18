@@ -36,10 +36,44 @@ export class PokemonDetail extends React.Component<PokemonDetailProps, PokemonDe
     }
 
     render(){
-        let image = null;
+        let content = null;
 
         if (this.state.expanded) {
-            image = <img src={this.pokemon.GetImageUrl()} />;
+            content = <Grid>
+                <Row className="show-grid">
+                    <Col>
+                        <img src={this.pokemon.GetImageUrl()} />
+                    </Col>
+                    <Col>
+                        <Tabs defaultActiveKey={1} id={this.pokemon.Name + "Tabs"}>
+                            <Tab key={this.pokemon + "GeneralTab"} eventKey={1} title="General">
+                                Name: {this.pokemon.Name}<br />
+                                Usage Rate: {this.pokemon.Usage}
+                            </Tab>
+                            <Tab key={this.pokemon + "MovesTab"} eventKey={2} title="Moves">
+                                Moves (Usage Rate %):<br />
+                                {this.pokemon.Moves.map(move => <MoveView move={move}/>)}
+                            </Tab>
+                            <Tab key={this.pokemon + "AbilitiesTab"} eventKey={3} title="Abilities">
+                                Abilities (Usage Rate %):<br />
+                                {this.pokemon.Abilities.map(ability => <AbilityView ability={ability}/>)}
+                            </Tab>
+                            <Tab key={this.pokemon + "ItemsTab"} eventKey={4} title="Items">
+                                Items (Usage Rate %):<br />
+                                {this.pokemon.Items.map(item => <ItemView item={item}/>)}
+                            </Tab>
+                            <Tab key={this.pokemon + "SpreadsTab"} eventKey={5} title="Spreads">
+                                Spreads (Usage Rate %):<br />
+                                {this.pokemon.Spreads.map(spread => <SpreadView spread={spread}/>)}
+                            </Tab>
+                            <Tab key={this.pokemon + "TeamMatesTab"} eventKey={6} title="Team Mates">
+                                Team Mates (Usage Rate %):<br />
+                                {this.pokemon.TeamMates.map(tM => <TeamMateView teamMate={tM}/>)}
+                            </Tab>
+                        </Tabs>
+                    </Col>
+                </Row>
+            </Grid>;
         }
 
         return (
@@ -48,41 +82,7 @@ export class PokemonDetail extends React.Component<PokemonDetailProps, PokemonDe
                 {this.pokemon.Name}
             </Button>
             <Panel collapsible expanded={this.state.expanded}>
-                <Grid>
-                    <Row className="show-grid">
-                        <Col>
-                            {image}
-                        </Col>
-                        <Col>
-                            <Tabs defaultActiveKey={1} id={this.pokemon.Name + "Tabs"}>
-                                <Tab key={this.pokemon + "GeneralTab"} eventKey={1} title="General">
-                                    Name: {this.pokemon.Name}<br />
-                                    Usage Rate: {this.pokemon.Usage}
-                                </Tab>
-                                <Tab key={this.pokemon + "MovesTab"} eventKey={2} title="Moves">
-                                    Moves (Usage Rate %):<br />
-                                    {this.pokemon.Moves.map(move => <MoveView move={move}/>)}
-                                </Tab>
-                                <Tab key={this.pokemon + "AbilitiesTab"} eventKey={3} title="Abilities">
-                                    Abilities (Usage Rate %):<br />
-                                    {this.pokemon.Abilities.map(ability => <AbilityView ability={ability}/>)}
-                                </Tab>
-                                <Tab key={this.pokemon + "ItemsTab"} eventKey={4} title="Items">
-                                    Items (Usage Rate %):<br />
-                                    {this.pokemon.Items.map(item => <ItemView item={item}/>)}
-                                </Tab>
-                                <Tab key={this.pokemon + "SpreadsTab"} eventKey={5} title="Spreads">
-                                    Spreads (Usage Rate %):<br />
-                                    {this.pokemon.Spreads.map(spread => <SpreadView spread={spread}/>)}
-                                </Tab>
-                                <Tab key={this.pokemon + "TeamMatesTab"} eventKey={6} title="Team Mates">
-                                    Team Mates (Usage Rate %):<br />
-                                    {this.pokemon.TeamMates.map(tM => <TeamMateView teamMate={tM}/>)}
-                                </Tab>
-                            </Tabs>
-                        </Col>
-                    </Row>
-                </Grid>
+                {content}
             </Panel>
         </div>);
     }
