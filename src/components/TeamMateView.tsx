@@ -16,9 +16,11 @@ export class TeamMateView extends React.Component<TeamMateViewProps, any> {
     }
 
     render() {
-        return (<div key={this.name + "_TeamMates"}>
-            {this.name}: {this.usageRate} <br/>
-            </div>
+        return (
+            <tr>
+                <td>{this.name}</td>
+                <td>{this.usageRate}</td>
+            </tr>
         );
     }
 }

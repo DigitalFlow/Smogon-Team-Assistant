@@ -1,9 +1,11 @@
+import { IRankable } from "./IRankable"
+
 export interface ItemProps {
     name: string;
     usageRate: number;
 }
 
-export class Item {
+export class Item implements IRankable {
     name: string;
     usageRate: number;
 

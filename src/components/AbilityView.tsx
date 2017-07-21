@@ -16,9 +16,11 @@ export class AbilityView extends React.Component<AbilityViewProps, any> {
     }
 
     render() {
-        return (<div key={this.name + "_Abilities"}>
-            {this.name}: {this.usageRate} <br/>
-            </div>
+        return (
+            <tr>
+                <td>{this.name}</td>
+                <td>{this.usageRate}</td>
+            </tr>
         );
     }
 }

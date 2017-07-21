@@ -8,6 +8,7 @@ import { Row } from "react-bootstrap";
 import { Col } from "react-bootstrap";
 import { Tabs } from "react-bootstrap";
 import { Tab } from "react-bootstrap";
+import { Table } from "react-bootstrap";
 import { AbilityView } from "./AbilityView";
 import { ItemView } from "./ItemView";
 import { MoveView } from "./MoveView";
@@ -24,7 +25,7 @@ class PokemonDetailState {
 
 // 'HelloProps' describes the shape of props.
 // State is never set so we use the 'undefined' type.
-export class PokemonDetail extends React.Component<PokemonDetailProps, PokemonDetailState> implements PokemonDetailProps {
+export class PokemonDetail extends React.PureComponent<PokemonDetailProps, PokemonDetailState> implements PokemonDetailProps {
     pokemon: Pokemon;
 
     constructor(props: PokemonDetailProps) {
@@ -33,6 +34,18 @@ export class PokemonDetail extends React.Component<PokemonDetailProps, PokemonDe
         this.state = {
             expanded: false
         }
+    }
+
+    shouldComponentUpdate(nextProps: PokemonDetailProps, nextState: PokemonDetailState){
+        if (nextProps.pokemon != this.props.pokemon){
+            return true;
+        }
+
+        if (nextState.expanded != this.state.expanded) {
+            return true;
+        }
+
+        return false;
     }
 
     render(){
@@ -51,24 +64,69 @@ export class PokemonDetail extends React.Component<PokemonDetailProps, PokemonDe
                                 Usage Rate: {this.pokemon.Usage}
                             </Tab>
                             <Tab key={this.pokemon + "MovesTab"} eventKey={2} title="Moves">
-                                Moves (Usage Rate %):<br />
-                                {this.pokemon.Moves.map(move => <MoveView move={move}/>)}
+                                <Table striped bordered condensed hover>
+                                    <thead>
+                                        <tr>
+                                            <th>Name</th>
+                                            <th>Usage Rate (%)</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {this.pokemon.Moves.map(move => <MoveView move={move}/>)}
+                                    </tbody>
+                                </Table>
                             </Tab>
                             <Tab key={this.pokemon + "AbilitiesTab"} eventKey={3} title="Abilities">
-                                Abilities (Usage Rate %):<br />
-                                {this.pokemon.Abilities.map(ability => <AbilityView ability={ability}/>)}
+                                <Table striped bordered condensed hover>
+                                    <thead>
+                                        <tr>
+                                            <th>Name</th>
+                                            <th>Usage Rate (%)</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {this.pokemon.Abilities.map(ability => <AbilityView ability={ability}/>)}
+                                    </tbody>
+                                </Table>
                             </Tab>
                             <Tab key={this.pokemon + "ItemsTab"} eventKey={4} title="Items">
-                                Items (Usage Rate %):<br />
-                                {this.pokemon.Items.map(item => <ItemView item={item}/>)}
+                                <Table striped bordered condensed hover>
+                                    <thead>
+                                        <tr>
+                                            <th>Name</th>
+                                            <th>Usage Rate (%)</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {this.pokemon.Items.map(item => <ItemView item={item}/>)}
+                                    </tbody>
+                                </Table>
                             </Tab>
                             <Tab key={this.pokemon + "SpreadsTab"} eventKey={5} title="Spreads">
-                                Spreads (Usage Rate %):<br />
-                                {this.pokemon.Spreads.map(spread => <SpreadView spread={spread}/>)}
+                                <Table striped bordered condensed hover>
+                                    <thead>
+                                        <tr>
+                                            <th>Name</th>
+                                            <th>Usage Rate (%)</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {this.pokemon.Spreads.map(spread => <SpreadView spread={spread}/>)}
+                                    </tbody>
+                                </Table>
                             </Tab>
                             <Tab key={this.pokemon + "TeamMatesTab"} eventKey={6} title="Team Mates">
-                                Team Mates (Usage Rate %):<br />
-                                {this.pokemon.TeamMates.map(tM => <TeamMateView teamMate={tM}/>)}
+                                <Table striped bordered condensed hover>
+                                    <thead>
+                                        <tr>
+                                            <th>Name</th>
+                                            <th>Usage Rate (%)</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {this.pokemon.TeamMates.map(tM => <TeamMateView teamMate={tM}/>)}
+                                    </tbody>
+                                </Table>
                             </Tab>
                         </Tabs>
                     </Col>

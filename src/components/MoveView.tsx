@@ -16,9 +16,11 @@ export class MoveView extends React.Component<MoveViewProps, any> {
     }
 
     render() {
-        return (<div key={this.name + "_Moves"}>
-            {this.name}: {this.usageRate} <br/>
-            </div>
+        return (
+            <tr>
+                <td>{this.name}</td>
+                <td>{this.usageRate}</td>
+            </tr>
         );
     }
 }

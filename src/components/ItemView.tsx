@@ -16,9 +16,11 @@ export class ItemView extends React.Component<ItemViewProps, any> {
     }
 
     render() {
-        return (<div key={this.name + "_Items"}>
-            {this.name}: {this.usageRate} <br/>
-            </div>
+        return (
+            <tr>
+                <td>{this.name}</td>
+                <td>{this.usageRate}</td>
+            </tr>
         );
     }
 }

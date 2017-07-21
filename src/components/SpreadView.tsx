@@ -16,9 +16,11 @@ export class SpreadView extends React.Component<SpreadViewProps, any> {
     }
 
     render() {
-        return (<div key={this.name + "_Spreads"}>
-            {this.name}: {this.usageRate} <br/>
-            </div>
+        return (
+            <tr>
+                <td>{this.name}</td>
+                <td>{this.usageRate}</td>
+            </tr>
         );
     }
 }
