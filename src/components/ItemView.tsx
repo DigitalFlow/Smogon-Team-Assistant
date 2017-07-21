@@ -5,7 +5,7 @@ export interface ItemViewProps {
     item: Item;
 }
 
-export class ItemView extends React.Component<ItemViewProps, any> {
+export class ItemView extends React.PureComponent<ItemViewProps, any> {
     name: string;
     usageRate: number;
 

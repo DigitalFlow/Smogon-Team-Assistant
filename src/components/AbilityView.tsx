@@ -5,7 +5,7 @@ export interface AbilityViewProps {
     ability: Ability;
 }
 
-export class AbilityView extends React.Component<AbilityViewProps, any> {
+export class AbilityView extends React.PureComponent<AbilityViewProps, any> {
     name: string;
     usageRate: number;
 

@@ -5,7 +5,7 @@ export interface TeamMateViewProps {
     teamMate: TeamMate;
 }
 
-export class TeamMateView extends React.Component<TeamMateViewProps, any> {
+export class TeamMateView extends React.PureComponent<TeamMateViewProps, any> {
     name: string;
     usageRate: number;
 
@@ -19,7 +19,7 @@ export class TeamMateView extends React.Component<TeamMateViewProps, any> {
         return (
             <tr>
                 <td>{this.name}</td>
-                <td>{this.usageRate}</td>
+                <td>{Math.abs(this.usageRate)}</td>
             </tr>
         );
     }

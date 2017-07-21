@@ -5,7 +5,7 @@ export interface MoveViewProps {
     move: Move;
 }
 
-export class MoveView extends React.Component<MoveViewProps, any> {
+export class MoveView extends React.PureComponent<MoveViewProps, any> {
     name: string;
     usageRate: number;
 

@@ -60,8 +60,24 @@ export class PokemonDetail extends React.PureComponent<PokemonDetailProps, Pokem
                     <Col>
                         <Tabs defaultActiveKey={1} id={this.pokemon.Name + "Tabs"}>
                             <Tab key={this.pokemon + "GeneralTab"} eventKey={1} title="General">
-                                Name: {this.pokemon.Name}<br />
-                                Usage Rate: {this.pokemon.Usage}
+                                <Table striped bordered condensed hover>
+                                    <thead>
+                                        <tr>
+                                            <th>Property</th>
+                                            <th>Value</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>Name</td>
+                                            <td>{this.pokemon.Name}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Usage Rate</td>
+                                            <td>{this.pokemon.Usage}</td>
+                                        </tr>
+                                    </tbody>
+                                </Table>
                             </Tab>
                             <Tab key={this.pokemon + "MovesTab"} eventKey={2} title="Moves">
                                 <Table striped bordered condensed hover>

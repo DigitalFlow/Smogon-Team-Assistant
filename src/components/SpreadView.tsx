@@ -5,7 +5,7 @@ export interface SpreadViewProps {
     spread: Spread;
 }
 
-export class SpreadView extends React.Component<SpreadViewProps, any> {
+export class SpreadView extends React.PureComponent<SpreadViewProps, any> {
     name: string;
     usageRate: number;
 
