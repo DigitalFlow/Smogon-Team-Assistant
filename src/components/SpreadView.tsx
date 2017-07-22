@@ -6,20 +6,15 @@ export interface SpreadViewProps {
 }
 
 export class SpreadView extends React.PureComponent<SpreadViewProps, any> {
-    name: string;
-    usageRate: number;
-
     constructor(props: SpreadViewProps) {
         super(props);
-        this.name = props.spread.name;
-        this.usageRate = props.spread.usageRate;
     }
 
     render() {
         return (
             <tr>
-                <td>{this.name}</td>
-                <td>{this.usageRate}</td>
+                <td>{this.props.spread.name}</td>
+                <td>{this.props.spread.usageRate}</td>
             </tr>
         );
     }

@@ -6,20 +6,15 @@ export interface MoveViewProps {
 }
 
 export class MoveView extends React.PureComponent<MoveViewProps, any> {
-    name: string;
-    usageRate: number;
-
     constructor(props: MoveViewProps) {
         super(props);
-        this.name = props.move.name;
-        this.usageRate = props.move.usageRate;
     }
 
     render() {
         return (
             <tr>
-                <td>{this.name}</td>
-                <td>{this.usageRate}</td>
+                <td>{this.props.move.name}</td>
+                <td>{this.props.move.usageRate}</td>
             </tr>
         );
     }

@@ -3,50 +3,51 @@ import { Item } from "./Item"
 import { Move } from "./Move"
 import { Spread } from "./Spread"
 import { TeamMate } from "./TeamMate"
+import { IRankable } from "./IRankable";
 
 export interface PokemonProps {
-    Name: string; 
-    Abilities: Array<Ability>;
-    Checks_And_Counters: object;
-    Happiness: object;
-    Items: Array<Item>;
-    Moves: Array<Move>;
-    Raw_Count:number;
-    Spreads: Array<Spread>;
-    TeamMates: Array<TeamMate>;
-    Viability_Ceiling: Array<number>
-    Usage: number;
+    name: string; 
+    abilities: Array<Ability>;
+    checks_And_Counters: object;
+    happiness: object;
+    items: Array<Item>;
+    moves: Array<Move>;
+    raw_Count:number;
+    spreads: Array<Spread>;
+    teamMates: Array<TeamMate>;
+    viability_Ceiling: Array<number>
+    usageRate: number;
 }
 
-export class Pokemon implements PokemonProps {
-    Name: string; 
-    Abilities: Array<Ability>;
-    Checks_And_Counters: object;
-    Happiness: object;
-    Items: Array<Item>;
-    Moves: Array<Move>;
-    Raw_Count:number;
-    Spreads: Array<Spread>;
-    TeamMates: Array<TeamMate>;
-    Viability_Ceiling: Array<number>
-    Usage: number;
+export class Pokemon implements PokemonProps, IRankable {
+    name: string; 
+    abilities: Array<Ability>;
+    checks_And_Counters: object;
+    happiness: object;
+    items: Array<Item>;
+    moves: Array<Move>;
+    raw_Count:number;
+    spreads: Array<Spread>;
+    teamMates: Array<TeamMate>;
+    viability_Ceiling: Array<number>
+    usageRate: number;
 
     constructor(parameters: PokemonProps){
-        this.Name = parameters.Name;
-        this.Abilities = parameters.Abilities;
-        this.Checks_And_Counters = parameters.Checks_And_Counters;
-        this.Happiness = parameters.Happiness;
-        this.Items = parameters.Items;
-        this.Moves = parameters.Moves;
-        this.Raw_Count = parameters.Raw_Count;
-        this.Spreads = parameters.Spreads;
-        this.TeamMates = parameters.TeamMates;
-        this.Viability_Ceiling = parameters.Viability_Ceiling;
-        this.Usage = parameters.Usage;
+        this.name = parameters.name;
+        this.abilities = parameters.abilities;
+        this.checks_And_Counters = parameters.checks_And_Counters;
+        this.happiness = parameters.happiness;
+        this.items = parameters.items;
+        this.moves = parameters.moves;
+        this.raw_Count = parameters.raw_Count;
+        this.spreads = parameters.spreads;
+        this.teamMates = parameters.teamMates;
+        this.viability_Ceiling = parameters.viability_Ceiling;
+        this.usageRate = parameters.usageRate;
     }
 
     public GetImageUrl() : string {
-        return `http://www.smogon.com/dex/media/sprites/xy/${this.Name
+        return `http://www.smogon.com/dex/media/sprites/xy/${this.name
             .toLowerCase()
             .replace(' ', "_")
             .replace('%', '')}.gif`;

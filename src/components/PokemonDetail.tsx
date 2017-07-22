@@ -58,7 +58,7 @@ export class PokemonDetail extends React.PureComponent<PokemonDetailProps, Pokem
                         <img src={this.pokemon.GetImageUrl()} />
                     </Col>
                     <Col>
-                        <Tabs defaultActiveKey={1} id={this.pokemon.Name + "Tabs"}>
+                        <Tabs defaultActiveKey={1} id={this.pokemon.name + "Tabs"}>
                             <Tab key={this.pokemon + "GeneralTab"} eventKey={1} title="General">
                                 <Table striped bordered condensed hover>
                                     <thead>
@@ -70,11 +70,11 @@ export class PokemonDetail extends React.PureComponent<PokemonDetailProps, Pokem
                                     <tbody>
                                         <tr>
                                             <td>Name</td>
-                                            <td>{this.pokemon.Name}</td>
+                                            <td>{this.pokemon.name}</td>
                                         </tr>
                                         <tr>
                                             <td>Usage Rate</td>
-                                            <td>{this.pokemon.Usage}</td>
+                                            <td>{this.pokemon.usageRate}</td>
                                         </tr>
                                     </tbody>
                                 </Table>
@@ -88,7 +88,7 @@ export class PokemonDetail extends React.PureComponent<PokemonDetailProps, Pokem
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        {this.pokemon.Moves.map(move => <MoveView move={move}/>)}
+                                        {this.pokemon.moves.map(move => <MoveView move={move}/>)}
                                     </tbody>
                                 </Table>
                             </Tab>
@@ -101,7 +101,7 @@ export class PokemonDetail extends React.PureComponent<PokemonDetailProps, Pokem
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        {this.pokemon.Abilities.map(ability => <AbilityView ability={ability}/>)}
+                                        {this.pokemon.abilities.map(ability => <AbilityView ability={ability}/>)}
                                     </tbody>
                                 </Table>
                             </Tab>
@@ -114,7 +114,7 @@ export class PokemonDetail extends React.PureComponent<PokemonDetailProps, Pokem
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        {this.pokemon.Items.map(item => <ItemView item={item}/>)}
+                                        {this.pokemon.items.map(item => <ItemView item={item}/>)}
                                     </tbody>
                                 </Table>
                             </Tab>
@@ -127,7 +127,7 @@ export class PokemonDetail extends React.PureComponent<PokemonDetailProps, Pokem
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        {this.pokemon.Spreads.map(spread => <SpreadView spread={spread}/>)}
+                                        {this.pokemon.spreads.map(spread => <SpreadView spread={spread}/>)}
                                     </tbody>
                                 </Table>
                             </Tab>
@@ -140,7 +140,7 @@ export class PokemonDetail extends React.PureComponent<PokemonDetailProps, Pokem
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        {this.pokemon.TeamMates.map(tM => <TeamMateView teamMate={tM}/>)}
+                                        {this.pokemon.teamMates.map(tM => <TeamMateView teamMate={tM}/>)}
                                     </tbody>
                                 </Table>
                             </Tab>
@@ -151,9 +151,9 @@ export class PokemonDetail extends React.PureComponent<PokemonDetailProps, Pokem
         }
 
         return (
-        <div key={this.pokemon.Name + "_Detail"}>
+        <div key={this.pokemon.name + "_Detail"}>
             <Button onClick={ ()=> this.setState({ expanded: !this.state.expanded })}>
-                {this.pokemon.Name}
+                {this.pokemon.name}
             </Button>
             <Panel collapsible expanded={this.state.expanded}>
                 {content}

@@ -6,6 +6,7 @@ import { Move } from "../model/Move";
 import { Spread } from "../model/Spread";
 import { TeamMate } from "../model/TeamMate";
 import { IAssociativeArray } from "../model/IAssociativeArray";
+import { DataSorter } from "./DataSorter";
 
 interface SmogonFile {
     data: IAssociativeArray;
@@ -28,22 +29,6 @@ export class StatParser {
     private calculatePercentage(base: number, value: number) {
          return value / base * 100;
     }
-
-    private sortByUsage(data: Array<IRankable>, descending?: boolean) {
-        var multiplier = descending ? -1 : 1;
-
-        return data.sort((a, b) => { 
-            if (a.usageRate < b.usageRate) {
-                return 1 * multiplier;
-            }
-
-            if (a.usageRate > b.usageRate) {
-                return -1 * multiplier;
-            }
-
-            return 0;
-        });
-    }
     
     public ParseStats(file: any): Array<Pokemon> {
         let parsed: SmogonFile = JSON.parse(file); 
@@ -54,40 +39,38 @@ export class StatParser {
         {
             let data = parsed.data[entry];
 
-            let abilities = new Array<Ability>();
-            let abilityBase = this.calculateObjectBase(data.Abilities);
+            // Stat base for the whole pokemon is easiest calculated using the sum of all abilities
+            let statBase = this.calculateObjectBase(data.Abilities);
 
+            let abilities = new Array<Ability>();
             Object.keys(data.Abilities).forEach(key => {
                 abilities.push(new Ability({
                     name: key, 
-                    usageRate: this.calculatePercentage(abilityBase, data.Abilities[key])
+                    usageRate: this.calculatePercentage(statBase, data.Abilities[key])
                 }));
             });
 
             let items = new Array<Item>();
-            let itemBase = this.calculateObjectBase(data.Items);
             Object.keys(data.Items).forEach(key => {
                 items.push(new Item({
                     name: key, 
-                    usageRate: this.calculatePercentage(itemBase, data.Items[key])
+                    usageRate: this.calculatePercentage(statBase, data.Items[key])
                 }));
             });
 
             let moves = new Array<Move>();
-            let moveBase = this.calculateObjectBase(data.Moves);
             Object.keys(data.Moves).forEach(key => {
                 moves.push(new Move({
                     name: key, 
-                    usageRate: this.calculatePercentage(moveBase, data.Moves[key])
+                    usageRate: this.calculatePercentage(statBase, data.Moves[key])
                 }));
             });
 
             let spreads = new Array<Spread>();
-            let spreadBase = this.calculateObjectBase(data.Spreads);
             Object.keys(data.Spreads).forEach(key => {
                 spreads.push(new Spread({
                     name: key, 
-                    usageRate: this.calculatePercentage(spreadBase, data.Spreads[key])
+                    usageRate: this.calculatePercentage(statBase, data.Spreads[key])
                 }));
             });
 
@@ -102,23 +85,23 @@ export class StatParser {
 
             // We need to create an object using the constructor, otherwise its functions won't be available
             let pokemon = new Pokemon({
-                Name: entry,
-                Abilities: this.sortByUsage(abilities),
-                Checks_And_Counters: data["Checks and Counters"],
-                Happiness: data.Happiness,
-                Items: this.sortByUsage(items),
-                Moves: this.sortByUsage(moves),
-                Raw_Count: data["Raw count"],
-                Spreads: this.sortByUsage(spreads),
-                TeamMates: this.sortByUsage(teamMates, true),
-                Usage: data.usage,
-                Viability_Ceiling: data["Viability Ceiling"] 
+                name: entry,
+                abilities: DataSorter.sortByUsage(abilities),
+                checks_And_Counters: data["Checks and Counters"],
+                happiness: data.Happiness,
+                items: DataSorter.sortByUsage(items),
+                moves: DataSorter.sortByUsage(moves),
+                raw_Count: data["Raw count"],
+                spreads: DataSorter.sortByUsage(spreads),
+                teamMates: DataSorter.sortByUsage(teamMates, true),
+                usageRate: data.usage,
+                viability_Ceiling: data["Viability Ceiling"] 
             });
           
             temp.push(pokemon);
         }
 
-        var sorted = temp.sort((pokeA, pokeB) => pokeA.Name.localeCompare(pokeB.Name));
+        var sorted = DataSorter.sortByName(temp);
 
         return sorted;
     }

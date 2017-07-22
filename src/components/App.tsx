@@ -1,6 +1,7 @@
 import * as React from "react";
 import { PokemonDetail } from "./PokemonDetail";
 import { PokemonDetailProps } from "./PokemonDetail";
+import { StatOverview } from "./StatOverview";
 import { Pokemon } from "../model/pokemon";
 import { Navbar } from "react-bootstrap";
 import { Nav } from "react-bootstrap";
@@ -10,6 +11,7 @@ import { NavDropdown } from "react-bootstrap";
 import { Jumbotron } from "react-bootstrap";
 import { IRankable } from "../model/IRankable";
 import { StatParser } from "../domain/StatParser";
+import { DataSorter } from "../domain/DataSorter";
 
 export interface AppProps { }
 
@@ -23,7 +25,7 @@ enum ViewState {
     TeamBuilder
 }
 
-export class App extends React.Component<AppProps, AppState> {
+export class App extends React.PureComponent<AppProps, AppState> {
     fileInput: HTMLInputElement;
 
     constructor(props: AppProps){
@@ -69,7 +71,7 @@ export class App extends React.Component<AppProps, AppState> {
 
         if (this.state.pokemon.length > 0) {
             if (this.state.viewState === ViewState.StatOverview) {
-                content = this.state.pokemon.map(poke => <PokemonDetail pokemon={poke} />);
+                content = (<StatOverview pokemon={this.state.pokemon} />);
             }
             else {
                 content = "Team Builder";

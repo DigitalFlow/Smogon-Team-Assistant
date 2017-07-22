@@ -6,20 +6,15 @@ export interface ItemViewProps {
 }
 
 export class ItemView extends React.PureComponent<ItemViewProps, any> {
-    name: string;
-    usageRate: number;
-
     constructor(props: ItemViewProps) {
         super(props);
-        this.name = props.item.name;
-        this.usageRate = props.item.usageRate;
     }
 
     render() {
         return (
             <tr>
-                <td>{this.name}</td>
-                <td>{this.usageRate}</td>
+                <td>{this.props.item.name}</td>
+                <td>{this.props.item.usageRate}</td>
             </tr>
         );
     }

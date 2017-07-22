@@ -6,20 +6,15 @@ export interface AbilityViewProps {
 }
 
 export class AbilityView extends React.PureComponent<AbilityViewProps, any> {
-    name: string;
-    usageRate: number;
-
     constructor(props: AbilityViewProps) {
         super(props);
-        this.name = props.ability.name;
-        this.usageRate = props.ability.usageRate;
     }
 
     render() {
         return (
             <tr>
-                <td>{this.name}</td>
-                <td>{this.usageRate}</td>
+                <td>{this.props.ability.name}</td>
+                <td>{this.props.ability.usageRate}</td>
             </tr>
         );
     }
