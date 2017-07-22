@@ -76,6 +76,10 @@ export class PokemonDetail extends React.PureComponent<PokemonDetailProps, Pokem
                                             <td>Usage Rate</td>
                                             <td>{this.pokemon.usageRate}</td>
                                         </tr>
+                                        <tr>
+                                            <td>Raw Count</td>
+                                            <td>{this.pokemon.raw_Count}</td>
+                                        </tr>
                                     </tbody>
                                 </Table>
                             </Tab>

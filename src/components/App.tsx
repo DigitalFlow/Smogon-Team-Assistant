@@ -2,6 +2,7 @@ import * as React from "react";
 import { PokemonDetail } from "./PokemonDetail";
 import { PokemonDetailProps } from "./PokemonDetail";
 import { StatOverview } from "./StatOverview";
+import { TeamBuilder } from "./TeamBuilder";
 import { Pokemon } from "../model/pokemon";
 import { Navbar } from "react-bootstrap";
 import { Nav } from "react-bootstrap";
@@ -71,10 +72,10 @@ export class App extends React.PureComponent<AppProps, AppState> {
 
         if (this.state.pokemon.length > 0) {
             if (this.state.viewState === ViewState.StatOverview) {
-                content = (<StatOverview pokemon={this.state.pokemon} />);
+                content = (<StatOverview key={"StatOverview"} pokemon={this.state.pokemon} />);
             }
             else {
-                content = "Team Builder";
+                content = (<TeamBuilder key={"TeamBuilder"} pokemon={this.state.pokemon}/>);
             }
         }
         else {

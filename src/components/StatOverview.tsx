@@ -2,6 +2,7 @@ import * as React from "react";
 import { ButtonGroup } from "react-bootstrap";
 import { DropdownButton } from "react-bootstrap";
 import { MenuItem } from "react-bootstrap";
+import { Well } from "react-bootstrap";
 import { Pokemon } from "../model/Pokemon";
 import { PokemonDetail } from "./PokemonDetail";
 import { DataSorter } from "../domain/DataSorter";
@@ -43,13 +44,17 @@ export class StatOverview extends React.PureComponent<StatOverviewProps, StatOve
 
         var content =
             (<div>
-                <ButtonGroup>
-                    <DropdownButton title="Order By" id="statOverviewOrderBy">
-                        <MenuItem onClick={() => this.setState({orderBy: OrderBy.Name})} eventKey="1">Name</MenuItem>
-                        <MenuItem onClick={() => this.setState({orderBy: OrderBy.Usage})} eventKey="2">Usage</MenuItem>
-                    </DropdownButton>
-                </ButtonGroup>
-                { pokeDetails }
+                <Well>
+                    <ButtonGroup>
+                        <DropdownButton title="Order By" id="statOverviewOrderBy">
+                            <MenuItem onClick={() => this.setState({orderBy: OrderBy.Name})} eventKey="1">Name</MenuItem>
+                            <MenuItem onClick={() => this.setState({orderBy: OrderBy.Usage})} eventKey="2">Usage</MenuItem>
+                        </DropdownButton>
+                    </ButtonGroup>
+                </Well>
+                <Well>
+                    { pokeDetails }
+                </Well>
             </div>);
 
         return content;
