@@ -1,20 +1,13 @@
 import * as React from "react";
 import { Pokemon } from "../Model/Pokemon";
 import { PokemonProps } from "../Model/Pokemon";
-import { Button } from "react-bootstrap";
-import { Panel } from "react-bootstrap";
-import { Grid } from "react-bootstrap";
-import { Row } from "react-bootstrap";
-import { Col } from "react-bootstrap";
-import { Tabs } from "react-bootstrap";
-import { Tab } from "react-bootstrap";
-import { Table } from "react-bootstrap";
+import { Button, Panel, Grid, Row, Col, Tabs, Tab, Table } from "react-bootstrap";
 import { AbilityView } from "./AbilityView";
 import { ItemView } from "./ItemView";
 import { MoveView } from "./MoveView";
 import { SpreadView } from "./SpreadView";
 import { TeamMateView } from "./TeamMateView";
-import { IRankable } from "../model/IRankable";
+import { IRankable } from "../domain/IRankable";
 
 export interface PokemonDetailProps { 
     pokemon: Pokemon;
@@ -64,6 +57,7 @@ export class PokemonDetail extends React.PureComponent<PokemonDetailProps, Pokem
         }
 
         if (this.state.expanded) {
+            // Inside content, array index 1 of Viability Ceiling is used, as this is the top GXE
             content = 
             <div>
                 { image }
@@ -91,6 +85,10 @@ export class PokemonDetail extends React.PureComponent<PokemonDetailProps, Pokem
                                             <tr>
                                                 <td>Raw Count</td>
                                                 <td>{this.props.pokemon.raw_Count}</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Viability Ceiling</td>
+                                                <td>{this.props.pokemon.viability_Ceiling[1]}</td>
                                             </tr>
                                         </tbody>
                                     </Table>

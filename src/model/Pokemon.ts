@@ -3,7 +3,7 @@ import { Item } from "./Item"
 import { Move } from "./Move"
 import { Spread } from "./Spread"
 import { TeamMate } from "./TeamMate"
-import { IRankable } from "./IRankable";
+import { IRankable } from "../domain/IRankable"
 
 export interface PokemonProps {
     name: string; 

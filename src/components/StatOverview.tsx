@@ -1,15 +1,13 @@
 import * as React from "react";
-import { ButtonGroup } from "react-bootstrap";
-import { DropdownButton } from "react-bootstrap";
-import { MenuItem } from "react-bootstrap";
-import { Well } from "react-bootstrap";
+import { ButtonGroup, DropdownButton, MenuItem, Well } from "react-bootstrap";
 import { Pokemon } from "../model/Pokemon";
 import { PokemonDetail } from "./PokemonDetail";
 import { DataSorter } from "../domain/DataSorter";
 
 export enum OrderBy {
     Name = 1,
-    Usage = 2
+    Usage = 2,
+    ViabilityCeiling = 3
 }
 
 export interface StatOverviewProps {
@@ -18,6 +16,7 @@ export interface StatOverviewProps {
 
 class StatOverviewState {
     orderBy: OrderBy;
+    descendingOrder: boolean;
 }
 
 export class StatOverview extends React.PureComponent<StatOverviewProps, StatOverviewState> {
@@ -25,7 +24,8 @@ export class StatOverview extends React.PureComponent<StatOverviewProps, StatOve
         super(props);
 
         this.state = {
-            orderBy: OrderBy.Name
+            orderBy: OrderBy.Name,
+            descendingOrder: false
         };
     }
 
@@ -37,10 +37,18 @@ export class StatOverview extends React.PureComponent<StatOverviewProps, StatOve
         let pokeDetails = null;
         let pokemon = this.props.pokemon.values();
 
-        if (this.state.orderBy === OrderBy.Name) {
-            pokeDetails = DataSorter.sortByName(pokemon).map(this.mapPokeDetail);
-        } else {
-            pokeDetails = DataSorter.sortByUsage(pokemon).map(this.mapPokeDetail);                        
+        switch(this.state.orderBy){
+            case OrderBy.Name:
+                pokeDetails = DataSorter.sortByName(pokemon, this.state.descendingOrder).map(this.mapPokeDetail);
+                break;
+            case OrderBy.Usage:
+                pokeDetails = DataSorter.sortByUsage(pokemon, this.state.descendingOrder).map(this.mapPokeDetail);                        
+                break;
+            case OrderBy.ViabilityCeiling:
+                pokeDetails = DataSorter.sortByViabilityCeiling(pokemon, this.state.descendingOrder).map(this.mapPokeDetail);                        
+                break;
+            default:
+                throw new Error(this.state.orderBy + " is not a valid order by value");
         }
 
         var content =
@@ -50,6 +58,11 @@ export class StatOverview extends React.PureComponent<StatOverviewProps, StatOve
                         <DropdownButton title="Order By" id="statOverviewOrderBy">
                             <MenuItem onClick={() => this.setState({orderBy: OrderBy.Name})} eventKey="1">Name</MenuItem>
                             <MenuItem onClick={() => this.setState({orderBy: OrderBy.Usage})} eventKey="2">Usage</MenuItem>
+                            <MenuItem onClick={() => this.setState({orderBy: OrderBy.ViabilityCeiling})} eventKey="3">Viability Ceiling</MenuItem>
+                        </DropdownButton>
+                        <DropdownButton title="Order Direction" id="statOverviewOrderDirection">
+                            <MenuItem onClick={() => this.setState({descendingOrder: false})} eventKey="1">Ascending</MenuItem>
+                            <MenuItem onClick={() => this.setState({descendingOrder: true})} eventKey="2">Descending</MenuItem>
                         </DropdownButton>
                     </ButtonGroup>
                 </Well>

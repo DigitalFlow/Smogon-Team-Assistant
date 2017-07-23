@@ -1,4 +1,4 @@
-import { IRankable } from "./IRankable"
+import { IRankable } from "../domain/IRankable"
 
 export interface AbilityProps {
     name: string;

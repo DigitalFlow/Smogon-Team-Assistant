@@ -4,13 +4,8 @@ import { PokemonDetailProps } from "./PokemonDetail";
 import { StatOverview } from "./StatOverview";
 import { TeamBuilder } from "./TeamBuilder";
 import { Pokemon } from "../model/pokemon";
-import { Navbar } from "react-bootstrap";
-import { Nav } from "react-bootstrap";
-import { NavItem } from "react-bootstrap";
-import { MenuItem } from "react-bootstrap";
-import { NavDropdown } from "react-bootstrap";
-import { Jumbotron } from "react-bootstrap";
-import { IRankable } from "../model/IRankable";
+import { Navbar, Nav, NavItem, MenuItem, NavDropdown, Jumbotron } from "react-bootstrap";
+import { IRankable } from "../domain/IRankable";
 import { StatParser } from "../domain/StatParser";
 import { DataSorter } from "../domain/DataSorter";
 

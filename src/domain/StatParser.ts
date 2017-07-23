@@ -1,11 +1,11 @@
 import { Pokemon } from "../model/Pokemon";
-import { IRankable } from "../model/IRankable";
+import { IRankable } from "./IRankable";
 import { Ability } from "../model/Ability";
 import { Item } from "../model/Item";
 import { Move } from "../model/Move";
 import { Spread } from "../model/Spread";
 import { TeamMate } from "../model/TeamMate";
-import { IAssociativeArray } from "../model/IAssociativeArray";
+import { IAssociativeArray } from "./IAssociativeArray";
 import { DataSorter } from "./DataSorter";
 
 interface SmogonFile {
@@ -34,6 +34,7 @@ export class StatParser {
         let parsed: SmogonFile = JSON.parse(file); 
       
         let stats = new Map<string, Pokemon>();
+        let temp = new Array<Pokemon>();
 
         for(let entry in parsed.data)
         {
@@ -86,20 +87,24 @@ export class StatParser {
             // We need to create an object using the constructor, otherwise its functions won't be available
             let pokemon = new Pokemon({
                 name: entry,
-                abilities: DataSorter.sortByUsage(abilities),
+                abilities: DataSorter.sortByUsage(abilities, true),
                 checks_And_Counters: data["Checks and Counters"],
                 happiness: data.Happiness,
-                items: DataSorter.sortByUsage(items),
-                moves: DataSorter.sortByUsage(moves),
+                items: DataSorter.sortByUsage(items, true),
+                moves: DataSorter.sortByUsage(moves, true),
                 raw_Count: data["Raw count"],
-                spreads: DataSorter.sortByUsage(spreads),
-                teamMates: DataSorter.sortByUsage(teamMates),
+                spreads: DataSorter.sortByUsage(spreads, true),
+                teamMates: DataSorter.sortByUsage(teamMates, true),
                 usageRate: data.usage,
                 viability_Ceiling: data["Viability Ceiling"] 
             });
           
-            stats.set(entry, pokemon);
+            temp.push(pokemon);
         }
+
+        DataSorter.sortByName(temp).forEach(p => {
+            stats.set(p.name, p);
+        });
 
         return stats;
     }
