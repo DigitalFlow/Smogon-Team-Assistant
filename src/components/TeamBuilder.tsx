@@ -26,16 +26,16 @@ export class TeamBuilder extends React.PureComponent<TeamBuilderProps, TeamBuild
         var slots = [];
 
         for (let i = 0; i < 6; i++) {
-            slots.push(<PokemonSlot key={"Pokemon_Slot_" + i} pokemon={this.props.pokemon} />);
+            slots.push(<PokemonSlot key={"Pokemon_Slot_" + i} slotNumber={i} pokemon={this.props.pokemon} />);
         }
 
         var content =
             (<div>
                 <Well>
                     <ButtonGroup>
-                        <Button name="Propose Team" id="proposeTeamButton" />
-                        <Button name="Export to ShowDown" id="exportShowDownButton" />
-                        <Button name="Import from ShowDown" id="importShowDownButton" />
+                        <Button id="proposeTeamButton">Propose Team</Button>
+                        <Button id="exportShowDownButton">Export to ShowDown</Button>
+                        <Button id="importShowDownButton">Import from ShowDown</Button>
                     </ButtonGroup>
                 </Well>
                 { slots }
