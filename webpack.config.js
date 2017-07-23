@@ -3,7 +3,7 @@ module.exports = {
     output: {
         filename: "bundle.js",
         path: __dirname + "/dist/js",
-        publicPath: '/Smogon-Team-Assistance/'
+        publicPath: '/Smogon-Team-Assistant/'
     },
 
     // Enable sourcemaps for debugging webpack's output.
