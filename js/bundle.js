@@ -9534,6 +9534,11 @@ class PokemonDetail extends React.PureComponent {
             expanded: false
         };
     }
+    filterByUsageRate(data) {
+        return data.filter(element => {
+            return element.usageRate > 0.1;
+        });
+    }
     shouldComponentUpdate(nextProps, nextState) {
         if (nextProps.pokemon != this.props.pokemon) {
             return true;
@@ -9580,7 +9585,8 @@ class PokemonDetail extends React.PureComponent {
                                                 React.createElement("tr", null,
                                                     React.createElement("th", null, "Name"),
                                                     React.createElement("th", null, "Usage Rate (%)"))),
-                                            React.createElement("tbody", null, this.props.pokemon.moves.map(move => React.createElement(MoveView_1.MoveView, { move: move }))))),
+                                            React.createElement("tbody", null, this.filterByUsageRate(this.props.pokemon.moves)
+                                                .map(move => React.createElement(MoveView_1.MoveView, { move: move }))))),
                                     React.createElement(react_bootstrap_7.Tab, { key: this.props.pokemon + "AbilitiesTab", eventKey: 3, title: "Abilities" },
                                         React.createElement(react_bootstrap_8.Table, { striped: true, bordered: true, condensed: true, hover: true },
                                             React.createElement("thead", null,
@@ -9594,21 +9600,24 @@ class PokemonDetail extends React.PureComponent {
                                                 React.createElement("tr", null,
                                                     React.createElement("th", null, "Name"),
                                                     React.createElement("th", null, "Usage Rate (%)"))),
-                                            React.createElement("tbody", null, this.props.pokemon.items.map(item => React.createElement(ItemView_1.ItemView, { item: item }))))),
+                                            React.createElement("tbody", null, this.filterByUsageRate(this.props.pokemon.items)
+                                                .map(item => React.createElement(ItemView_1.ItemView, { item: item }))))),
                                     React.createElement(react_bootstrap_7.Tab, { key: this.props.pokemon + "SpreadsTab", eventKey: 5, title: "Spreads" },
                                         React.createElement(react_bootstrap_8.Table, { striped: true, bordered: true, condensed: true, hover: true },
                                             React.createElement("thead", null,
                                                 React.createElement("tr", null,
                                                     React.createElement("th", null, "Name"),
                                                     React.createElement("th", null, "Usage Rate (%)"))),
-                                            React.createElement("tbody", null, this.props.pokemon.spreads.map(spread => React.createElement(SpreadView_1.SpreadView, { spread: spread }))))),
+                                            React.createElement("tbody", null, this.filterByUsageRate(this.props.pokemon.spreads)
+                                                .map(spread => React.createElement(SpreadView_1.SpreadView, { spread: spread }))))),
                                     React.createElement(react_bootstrap_7.Tab, { key: this.props.pokemon + "TeamMatesTab", eventKey: 6, title: "Team Mates" },
                                         React.createElement(react_bootstrap_8.Table, { striped: true, bordered: true, condensed: true, hover: true },
                                             React.createElement("thead", null,
                                                 React.createElement("tr", null,
                                                     React.createElement("th", null, "Name"),
                                                     React.createElement("th", null, "Usage Rate (%)"))),
-                                            React.createElement("tbody", null, this.props.pokemon.teamMates.map(tM => React.createElement(TeamMateView_1.TeamMateView, { teamMate: tM }))))))))));
+                                            React.createElement("tbody", null, this.filterByUsageRate(this.props.pokemon.teamMates)
+                                                .map(tM => React.createElement(TeamMateView_1.TeamMateView, { teamMate: tM }))))))))));
         }
         return (React.createElement("div", { key: this.props.pokemon.name + "_Detail" },
             React.createElement(react_bootstrap_1.Button, { onClick: () => this.setState({ expanded: !this.state.expanded }) }, buttonName),
@@ -23780,12 +23789,12 @@ class StatParser {
                     usageRate: this.calculatePercentage(statBase, data.Spreads[key])
                 }));
             });
+            // teammate stats are % of teams with A that also have B - % of teams with B
             let teamMates = new Array();
-            let teamMateBase = this.calculateObjectBase(data.Teammates);
             Object.keys(data.Teammates).forEach(key => {
                 teamMates.push(new TeamMate_1.TeamMate({
                     name: key,
-                    usageRate: this.calculatePercentage(teamMateBase, data.Teammates[key])
+                    usageRate: this.calculatePercentage(statBase, data.Teammates[key])
                 }));
             });
             // We need to create an object using the constructor, otherwise its functions won't be available
@@ -23798,7 +23807,7 @@ class StatParser {
                 moves: DataSorter_1.DataSorter.sortByUsage(moves),
                 raw_Count: data["Raw count"],
                 spreads: DataSorter_1.DataSorter.sortByUsage(spreads),
-                teamMates: DataSorter_1.DataSorter.sortByUsage(teamMates, true),
+                teamMates: DataSorter_1.DataSorter.sortByUsage(teamMates),
                 usageRate: data.usage,
                 viability_Ceiling: data["Viability Ceiling"]
             });
