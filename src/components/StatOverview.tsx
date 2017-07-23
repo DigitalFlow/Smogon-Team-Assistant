@@ -13,7 +13,7 @@ export enum OrderBy {
 }
 
 export interface StatOverviewProps {
-    pokemon: Array<Pokemon>;
+    pokemon: Map<string, Pokemon>;
  }
 
 class StatOverviewState {
@@ -35,11 +35,12 @@ export class StatOverview extends React.PureComponent<StatOverviewProps, StatOve
 
     render(){
         let pokeDetails = null;
+        let pokemon = this.props.pokemon.values();
 
         if (this.state.orderBy === OrderBy.Name) {
-            pokeDetails = DataSorter.sortByName(this.props.pokemon).map(this.mapPokeDetail);
+            pokeDetails = DataSorter.sortByName(pokemon).map(this.mapPokeDetail);
         } else {
-            pokeDetails = DataSorter.sortByUsage(this.props.pokemon).map(this.mapPokeDetail);                        
+            pokeDetails = DataSorter.sortByUsage(pokemon).map(this.mapPokeDetail);                        
         }
 
         var content =

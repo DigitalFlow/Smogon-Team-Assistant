@@ -1,13 +1,13 @@
 import * as React from "react";
 import { ButtonGroup } from "react-bootstrap";
 import { DropdownButton } from "react-bootstrap";
-import { MenuItem } from "react-bootstrap";
+import { Button } from "react-bootstrap";
 import { Well } from "react-bootstrap";
 import { Pokemon } from "../model/Pokemon";
 import { PokemonSlot } from "./PokemonSlot";
 
 export interface TeamBuilderProps {
-    pokemon: Array<Pokemon>;
+    pokemon: Map<string, Pokemon>;
  }
 
 class TeamBuilderState {
@@ -33,9 +33,9 @@ export class TeamBuilder extends React.PureComponent<TeamBuilderProps, TeamBuild
             (<div>
                 <Well>
                     <ButtonGroup>
-                        <DropdownButton title="Propose Team" id="proposeTeamButton">
-                            <MenuItem onClick={() => this.setState({})} eventKey="1">Name</MenuItem>
-                        </DropdownButton>
+                        <Button name="Propose Team" id="proposeTeamButton" />
+                        <Button name="Export to ShowDown" id="exportShowDownButton" />
+                        <Button name="Import from ShowDown" id="importShowDownButton" />
                     </ButtonGroup>
                 </Well>
                 { slots }

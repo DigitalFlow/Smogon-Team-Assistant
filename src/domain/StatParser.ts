@@ -30,10 +30,10 @@ export class StatParser {
          return value / base * 100;
     }
     
-    public ParseStats(file: any): Array<Pokemon> {
+    public ParseStats(file: any): Map<string, Pokemon> {
         let parsed: SmogonFile = JSON.parse(file); 
       
-        let temp: Array<Pokemon> = [];
+        let stats = new Map<string, Pokemon>();
 
         for(let entry in parsed.data)
         {
@@ -98,11 +98,9 @@ export class StatParser {
                 viability_Ceiling: data["Viability Ceiling"] 
             });
           
-            temp.push(pokemon);
+            stats.set(entry, pokemon);
         }
 
-        var sorted = DataSorter.sortByName(temp);
-
-        return sorted;
+        return stats;
     }
 }

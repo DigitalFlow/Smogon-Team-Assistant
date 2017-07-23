@@ -1,14 +1,10 @@
 import * as React from "react";
-import { ButtonGroup } from "react-bootstrap";
-import { DropdownButton } from "react-bootstrap";
-import { Grid } from "react-bootstrap";
-import { Row } from "react-bootstrap";
-import { Col } from "react-bootstrap";
-import { MenuItem } from "react-bootstrap";
+import { MenuItem, Grid, DropdownButton, ButtonGroup, Col, Row } from "react-bootstrap";
+import Select = require("react-select");
 import { Pokemon } from "../model/Pokemon";
 
 export interface PokemonSlotProps {
-    pokemon: Array<Pokemon>;
+    pokemon: Map<string, Pokemon>;
  }
 
 class PokemonSlotState {
@@ -25,11 +21,14 @@ export class PokemonSlot extends React.PureComponent<PokemonSlotProps, PokemonSl
     }
 
     render(){
-        var image = null;
+        let image = null;
 
         if(this.state.pokemon) {
             image = <img src={this.state.pokemon.GetImageUrl()} />;
         }
+
+        let options = Array.from(this.props.pokemon.keys())
+            .map(name => { return {value: name, label: name}});
 
         let content = (<div>
             <Grid>
@@ -38,7 +37,11 @@ export class PokemonSlot extends React.PureComponent<PokemonSlotProps, PokemonSl
                         { image }
                     </Col>
                     <Col>
-                    
+                        <Select
+                            name={"pokemonSelect"}
+                            options={options}
+                            onChange={(event: any) => this.setState({pokemon: this.props.pokemon.get(event.value)})}
+                        />
                     </Col>
                 </Row>
             </Grid>

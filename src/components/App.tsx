@@ -17,7 +17,7 @@ import { DataSorter } from "../domain/DataSorter";
 export interface AppProps { }
 
 class AppState {
-    pokemon: Array<Pokemon>;
+    pokemon: Map<string, Pokemon>;
     viewState: ViewState;
 }
 
@@ -35,7 +35,7 @@ export class App extends React.PureComponent<AppProps, AppState> {
         this.receivedText = this.receivedText.bind(this);
 
         this.state = {
-            pokemon: [],
+            pokemon: new Map<string, Pokemon>(),
             viewState: ViewState.StatOverview
         };
     }
@@ -70,7 +70,7 @@ export class App extends React.PureComponent<AppProps, AppState> {
     render() {
         let content = null;
 
-        if (this.state.pokemon.length > 0) {
+        if (this.state.pokemon.size > 0) {
             if (this.state.viewState === ViewState.StatOverview) {
                 content = (<StatOverview key={"StatOverview"} pokemon={this.state.pokemon} />);
             }
