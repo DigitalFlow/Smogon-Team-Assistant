@@ -74,12 +74,12 @@ export class StatParser {
                 }));
             });
 
+            // teammate stats are % of teams with A that also have B - % of teams with B
             let teamMates = new Array<TeamMate>();
-            let teamMateBase = this.calculateObjectBase(data.Teammates);
             Object.keys(data.Teammates).forEach(key => {
                 teamMates.push(new TeamMate({
                     name: key, 
-                    usageRate: this.calculatePercentage(teamMateBase, data.Teammates[key])
+                    usageRate: this.calculatePercentage(statBase, data.Teammates[key])
                 }));
             });
 
@@ -93,7 +93,7 @@ export class StatParser {
                 moves: DataSorter.sortByUsage(moves),
                 raw_Count: data["Raw count"],
                 spreads: DataSorter.sortByUsage(spreads),
-                teamMates: DataSorter.sortByUsage(teamMates, true),
+                teamMates: DataSorter.sortByUsage(teamMates),
                 usageRate: data.usage,
                 viability_Ceiling: data["Viability Ceiling"] 
             });

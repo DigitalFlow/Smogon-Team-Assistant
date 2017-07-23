@@ -14,6 +14,7 @@ import { ItemView } from "./ItemView";
 import { MoveView } from "./MoveView";
 import { SpreadView } from "./SpreadView";
 import { TeamMateView } from "./TeamMateView";
+import { IRankable } from "../model/IRankable";
 
 export interface PokemonDetailProps { 
     pokemon: Pokemon;
@@ -33,6 +34,12 @@ export class PokemonDetail extends React.PureComponent<PokemonDetailProps, Pokem
         this.state = {
             expanded: false
         }
+    }
+
+    filterByUsageRate<T extends IRankable>(data: Array<T>){
+        return data.filter(element => {
+            return element.usageRate > 0.1;
+        })
     }
 
     shouldComponentUpdate(nextProps: PokemonDetailProps, nextState: PokemonDetailState){
@@ -97,7 +104,8 @@ export class PokemonDetail extends React.PureComponent<PokemonDetailProps, Pokem
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            {this.props.pokemon.moves.map(move => <MoveView move={move}/>)}
+                                            {this.filterByUsageRate(this.props.pokemon.moves)
+                                                .map(move => <MoveView move={move}/>)}
                                         </tbody>
                                     </Table>
                                 </Tab>
@@ -123,7 +131,8 @@ export class PokemonDetail extends React.PureComponent<PokemonDetailProps, Pokem
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            {this.props.pokemon.items.map(item => <ItemView item={item}/>)}
+                                            {this.filterByUsageRate(this.props.pokemon.items)
+                                                .map(item => <ItemView item={item}/>)}
                                         </tbody>
                                     </Table>
                                 </Tab>
@@ -136,7 +145,8 @@ export class PokemonDetail extends React.PureComponent<PokemonDetailProps, Pokem
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            {this.props.pokemon.spreads.map(spread => <SpreadView spread={spread}/>)}
+                                            {this.filterByUsageRate(this.props.pokemon.spreads)
+                                                .map(spread => <SpreadView spread={spread}/>)}
                                         </tbody>
                                     </Table>
                                 </Tab>
@@ -149,7 +159,8 @@ export class PokemonDetail extends React.PureComponent<PokemonDetailProps, Pokem
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            {this.props.pokemon.teamMates.map(tM => <TeamMateView teamMate={tM}/>)}
+                                            {this.filterByUsageRate(this.props.pokemon.teamMates)
+                                                .map(tM => <TeamMateView teamMate={tM}/>)}
                                         </tbody>
                                     </Table>
                                 </Tab>
