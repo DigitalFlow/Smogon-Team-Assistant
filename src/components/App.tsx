@@ -91,7 +91,7 @@ export class App extends React.PureComponent<AppProps, AppState> {
             <Navbar inverse collapseOnSelect>
                 <Navbar.Header>
                 <Navbar.Brand>
-                    <a href="#">Smogon Team Assistance</a>
+                    <a href="#">Smogon Team Assistant</a>
                 </Navbar.Brand>
                 <Navbar.Toggle />
                 </Navbar.Header>
