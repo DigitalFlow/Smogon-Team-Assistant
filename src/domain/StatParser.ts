@@ -107,7 +107,7 @@ export default class StatParser {
                 raw_Count: data["Raw count"],
                 spreads: DataSorter.sortByUsage(spreads, true),
                 teamMates: DataSorter.sortByUsage(teamMates, true),
-                usageRate: data.usage,
+                usageRate: data.usage * 100,
                 viability_Ceiling: data["Viability Ceiling"] 
             });
           

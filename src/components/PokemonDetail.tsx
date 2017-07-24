@@ -74,7 +74,7 @@ export default class PokemonDetail extends React.PureComponent<PokemonDetailProp
                                                 <td>{this.props.pokemon.name}</td>
                                             </tr>
                                             <tr>
-                                                <td>Usage Rate (weighted)</td>
+                                                <td>Usage (%)</td>
                                                 <td>{this.props.pokemon.usageRate}</td>
                                             </tr>
                                             <tr>
