@@ -1487,7 +1487,7 @@ module.exports = exports['default'];
 
 
 var React = __webpack_require__(0);
-var factory = __webpack_require__(284);
+var factory = __webpack_require__(280);
 
 if (typeof React === 'undefined') {
   throw Error(
@@ -2876,7 +2876,7 @@ var _reactDom = __webpack_require__(13);
 
 var _reactDom2 = _interopRequireDefault(_reactDom);
 
-var _reactInputAutosize = __webpack_require__(287);
+var _reactInputAutosize = __webpack_require__(283);
 
 var _reactInputAutosize2 = _interopRequireDefault(_reactInputAutosize);
 
@@ -2884,7 +2884,7 @@ var _classnames = __webpack_require__(6);
 
 var _classnames2 = _interopRequireDefault(_classnames);
 
-var _utilsDefaultArrowRenderer = __webpack_require__(288);
+var _utilsDefaultArrowRenderer = __webpack_require__(284);
 
 var _utilsDefaultArrowRenderer2 = _interopRequireDefault(_utilsDefaultArrowRenderer);
 
@@ -2896,27 +2896,27 @@ var _utilsDefaultMenuRenderer = __webpack_require__(134);
 
 var _utilsDefaultMenuRenderer2 = _interopRequireDefault(_utilsDefaultMenuRenderer);
 
-var _utilsDefaultClearRenderer = __webpack_require__(289);
+var _utilsDefaultClearRenderer = __webpack_require__(285);
 
 var _utilsDefaultClearRenderer2 = _interopRequireDefault(_utilsDefaultClearRenderer);
 
-var _Async = __webpack_require__(290);
+var _Async = __webpack_require__(286);
 
 var _Async2 = _interopRequireDefault(_Async);
 
-var _AsyncCreatable = __webpack_require__(291);
+var _AsyncCreatable = __webpack_require__(287);
 
 var _AsyncCreatable2 = _interopRequireDefault(_AsyncCreatable);
 
-var _Creatable = __webpack_require__(292);
+var _Creatable = __webpack_require__(288);
 
 var _Creatable2 = _interopRequireDefault(_Creatable);
 
-var _Option = __webpack_require__(293);
+var _Option = __webpack_require__(289);
 
 var _Option2 = _interopRequireDefault(_Option);
 
-var _Value = __webpack_require__(294);
+var _Value = __webpack_require__(290);
 
 var _Value2 = _interopRequireDefault(_Value);
 
@@ -5703,7 +5703,8 @@ var DataSorter;
         return sorted;
     }
     DataSorter.sortByName = sortByName;
-})(DataSorter = exports.DataSorter || (exports.DataSorter = {}));
+})(DataSorter || (DataSorter = {}));
+exports.default = DataSorter;
 
 
 /***/ }),
@@ -9560,11 +9561,7 @@ TabPane.childContextTypes = childContextTypes;
 Object.defineProperty(exports, "__esModule", { value: true });
 const React = __webpack_require__(0);
 const react_bootstrap_1 = __webpack_require__(33);
-const AbilityView_1 = __webpack_require__(277);
-const ItemView_1 = __webpack_require__(278);
-const MoveView_1 = __webpack_require__(279);
-const SpreadView_1 = __webpack_require__(280);
-const TeamMateView_1 = __webpack_require__(281);
+const IRankableView_1 = __webpack_require__(277);
 class PokemonDetailState {
 }
 // 'HelloProps' describes the shape of props.
@@ -9632,14 +9629,15 @@ class PokemonDetail extends React.PureComponent {
                                                     React.createElement("th", null, "Name"),
                                                     React.createElement("th", null, "Usage Rate (%)"))),
                                             React.createElement("tbody", null, this.filterByUsageRate(this.props.pokemon.moves)
-                                                .map(move => React.createElement(MoveView_1.MoveView, { move: move }))))),
+                                                .map(IRankableView_1.default)))),
                                     React.createElement(react_bootstrap_1.Tab, { key: this.props.pokemon + "AbilitiesTab", eventKey: 3, title: "Abilities" },
                                         React.createElement(react_bootstrap_1.Table, { striped: true, bordered: true, condensed: true, hover: true },
                                             React.createElement("thead", null,
                                                 React.createElement("tr", null,
                                                     React.createElement("th", null, "Name"),
                                                     React.createElement("th", null, "Usage Rate (%)"))),
-                                            React.createElement("tbody", null, this.props.pokemon.abilities.map(ability => React.createElement(AbilityView_1.AbilityView, { ability: ability }))))),
+                                            React.createElement("tbody", null, this.props.pokemon.abilities
+                                                .map(IRankableView_1.default)))),
                                     React.createElement(react_bootstrap_1.Tab, { key: this.props.pokemon + "ItemsTab", eventKey: 4, title: "Items" },
                                         React.createElement(react_bootstrap_1.Table, { striped: true, bordered: true, condensed: true, hover: true },
                                             React.createElement("thead", null,
@@ -9647,7 +9645,7 @@ class PokemonDetail extends React.PureComponent {
                                                     React.createElement("th", null, "Name"),
                                                     React.createElement("th", null, "Usage Rate (%)"))),
                                             React.createElement("tbody", null, this.filterByUsageRate(this.props.pokemon.items)
-                                                .map(item => React.createElement(ItemView_1.ItemView, { item: item }))))),
+                                                .map(IRankableView_1.default)))),
                                     React.createElement(react_bootstrap_1.Tab, { key: this.props.pokemon + "SpreadsTab", eventKey: 5, title: "Spreads" },
                                         React.createElement(react_bootstrap_1.Table, { striped: true, bordered: true, condensed: true, hover: true },
                                             React.createElement("thead", null,
@@ -9655,7 +9653,7 @@ class PokemonDetail extends React.PureComponent {
                                                     React.createElement("th", null, "Name"),
                                                     React.createElement("th", null, "Usage Rate (%)"))),
                                             React.createElement("tbody", null, this.filterByUsageRate(this.props.pokemon.spreads)
-                                                .map(spread => React.createElement(SpreadView_1.SpreadView, { spread: spread }))))),
+                                                .map(IRankableView_1.default)))),
                                     React.createElement(react_bootstrap_1.Tab, { key: this.props.pokemon + "TeamMatesTab", eventKey: 6, title: "Team Mates" },
                                         React.createElement(react_bootstrap_1.Table, { striped: true, bordered: true, condensed: true, hover: true },
                                             React.createElement("thead", null,
@@ -9663,14 +9661,14 @@ class PokemonDetail extends React.PureComponent {
                                                     React.createElement("th", null, "Name"),
                                                     React.createElement("th", null, "Usage Rate (%)"))),
                                             React.createElement("tbody", null, this.filterByUsageRate(this.props.pokemon.teamMates)
-                                                .map(tM => React.createElement(TeamMateView_1.TeamMateView, { teamMate: tM }))))))))));
+                                                .map(IRankableView_1.default)))))))));
         }
         return (React.createElement("div", { key: this.props.pokemon.name + "_Detail" },
             React.createElement(react_bootstrap_1.Button, { onClick: () => this.setState({ expanded: !this.state.expanded }) }, buttonName),
             React.createElement(react_bootstrap_1.Panel, { collapsible: true, expanded: this.state.expanded }, content)));
     }
 }
-exports.PokemonDetail = PokemonDetail;
+exports.default = PokemonDetail;
 
 
 /***/ }),
@@ -9814,7 +9812,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const React = __webpack_require__(0);
 const ReactDOM = __webpack_require__(13);
 const App_1 = __webpack_require__(136);
-ReactDOM.render(React.createElement(App_1.App, null), document.getElementById("root"));
+ReactDOM.render(React.createElement(App_1.default, null), document.getElementById("root"));
 
 
 /***/ }),
@@ -9826,9 +9824,9 @@ ReactDOM.render(React.createElement(App_1.App, null), document.getElementById("r
 Object.defineProperty(exports, "__esModule", { value: true });
 const React = __webpack_require__(0);
 const StatOverview_1 = __webpack_require__(137);
-const TeamBuilder_1 = __webpack_require__(282);
+const TeamBuilder_1 = __webpack_require__(278);
 const react_bootstrap_1 = __webpack_require__(33);
-const StatParser_1 = __webpack_require__(296);
+const StatParser_1 = __webpack_require__(292);
 class AppState {
 }
 var ViewState;
@@ -9862,7 +9860,7 @@ class App extends React.PureComponent {
     }
     receivedText(e) {
         let target = e.target;
-        var parser = new StatParser_1.StatParser();
+        var parser = new StatParser_1.default();
         var pokemon = parser.ParseStats(target.result);
         this.setState({ pokemon: pokemon });
     }
@@ -9870,10 +9868,10 @@ class App extends React.PureComponent {
         let content = null;
         if (this.state.pokemon.size > 0) {
             if (this.state.viewState === ViewState.StatOverview) {
-                content = (React.createElement(StatOverview_1.StatOverview, { key: "StatOverview", pokemon: this.state.pokemon }));
+                content = (React.createElement(StatOverview_1.default, { key: "StatOverview", pokemon: this.state.pokemon }));
             }
             else {
-                content = (React.createElement(TeamBuilder_1.TeamBuilder, { key: "TeamBuilder", pokemon: this.state.pokemon }));
+                content = (React.createElement(TeamBuilder_1.default, { key: "TeamBuilder", pokemon: this.state.pokemon }));
             }
         }
         else {
@@ -9902,7 +9900,7 @@ class App extends React.PureComponent {
             React.createElement("div", null, content)));
     }
 }
-exports.App = App;
+exports.default = App;
 
 
 /***/ }),
@@ -9933,20 +9931,20 @@ class StatOverview extends React.PureComponent {
         };
     }
     mapPokeDetail(poke) {
-        return (React.createElement(PokemonDetail_1.PokemonDetail, { key: poke.name + "_Detail", pokemon: poke }));
+        return (React.createElement(PokemonDetail_1.default, { key: poke.name + "_Detail", pokemon: poke }));
     }
     render() {
         let pokeDetails = null;
         let pokemon = this.props.pokemon.values();
         switch (this.state.orderBy) {
             case OrderBy.Name:
-                pokeDetails = DataSorter_1.DataSorter.sortByName(pokemon, this.state.descendingOrder).map(this.mapPokeDetail);
+                pokeDetails = DataSorter_1.default.sortByName(pokemon, this.state.descendingOrder).map(this.mapPokeDetail);
                 break;
             case OrderBy.Usage:
-                pokeDetails = DataSorter_1.DataSorter.sortByUsage(pokemon, this.state.descendingOrder).map(this.mapPokeDetail);
+                pokeDetails = DataSorter_1.default.sortByUsage(pokemon, this.state.descendingOrder).map(this.mapPokeDetail);
                 break;
             case OrderBy.ViabilityCeiling:
-                pokeDetails = DataSorter_1.DataSorter.sortByViabilityCeiling(pokemon, this.state.descendingOrder).map(this.mapPokeDetail);
+                pokeDetails = DataSorter_1.default.sortByViabilityCeiling(pokemon, this.state.descendingOrder).map(this.mapPokeDetail);
                 break;
             default:
                 throw new Error(this.state.orderBy + " is not a valid order by value");
@@ -9965,7 +9963,7 @@ class StatOverview extends React.PureComponent {
         return content;
     }
 }
-exports.StatOverview = StatOverview;
+exports.default = StatOverview;
 
 
 /***/ }),
@@ -21413,17 +21411,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 Object.defineProperty(exports, "__esModule", { value: true });
 const React = __webpack_require__(0);
-class AbilityView extends React.PureComponent {
-    constructor(props) {
-        super(props);
-    }
-    render() {
-        return (React.createElement("tr", null,
-            React.createElement("td", null, this.props.ability.name),
-            React.createElement("td", null, this.props.ability.usageRate)));
-    }
-}
-exports.AbilityView = AbilityView;
+const IRankableView = (props) => (React.createElement("tr", null,
+    React.createElement("td", null, props.name),
+    React.createElement("td", null, props.usageRate)));
+exports.default = IRankableView;
 
 
 /***/ }),
@@ -21434,93 +21425,9 @@ exports.AbilityView = AbilityView;
 
 Object.defineProperty(exports, "__esModule", { value: true });
 const React = __webpack_require__(0);
-class ItemView extends React.PureComponent {
-    constructor(props) {
-        super(props);
-    }
-    render() {
-        return (React.createElement("tr", null,
-            React.createElement("td", null, this.props.item.name),
-            React.createElement("td", null, this.props.item.usageRate)));
-    }
-}
-exports.ItemView = ItemView;
-
-
-/***/ }),
-/* 279 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-const React = __webpack_require__(0);
-class MoveView extends React.PureComponent {
-    constructor(props) {
-        super(props);
-    }
-    render() {
-        return (React.createElement("tr", null,
-            React.createElement("td", null, this.props.move.name),
-            React.createElement("td", null, this.props.move.usageRate)));
-    }
-}
-exports.MoveView = MoveView;
-
-
-/***/ }),
-/* 280 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-const React = __webpack_require__(0);
-class SpreadView extends React.PureComponent {
-    constructor(props) {
-        super(props);
-    }
-    render() {
-        return (React.createElement("tr", null,
-            React.createElement("td", null, this.props.spread.name),
-            React.createElement("td", null, this.props.spread.usageRate)));
-    }
-}
-exports.SpreadView = SpreadView;
-
-
-/***/ }),
-/* 281 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-const React = __webpack_require__(0);
-class TeamMateView extends React.PureComponent {
-    constructor(props) {
-        super(props);
-    }
-    render() {
-        return (React.createElement("tr", null,
-            React.createElement("td", null, this.props.teamMate.name),
-            React.createElement("td", null, Math.abs(this.props.teamMate.usageRate))));
-    }
-}
-exports.TeamMateView = TeamMateView;
-
-
-/***/ }),
-/* 282 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-const React = __webpack_require__(0);
 const react_bootstrap_1 = __webpack_require__(33);
-const PokemonSlot_1 = __webpack_require__(283);
-const TeamProposer_1 = __webpack_require__(295);
+const PokemonSlot_1 = __webpack_require__(279);
+const TeamProposer_1 = __webpack_require__(291);
 class TeamBuilderState {
 }
 class TeamBuilder extends React.PureComponent {
@@ -21534,7 +21441,7 @@ class TeamBuilder extends React.PureComponent {
     }
     proposeTeam() {
         var currentTeam = this.state.slots.map(s => s.state.pokemon);
-        var proposedTeam = TeamProposer_1.TeamProposer.proposeByTeammateStats(currentTeam, this.props.pokemon);
+        var proposedTeam = TeamProposer_1.default.proposeByTeammateStats(currentTeam, this.props.pokemon);
         for (let i = 0; i < this.state.slots.length; i++) {
             let slot = this.state.slots[i];
             slot.setState({ pokemon: proposedTeam[i] });
@@ -21548,24 +21455,24 @@ class TeamBuilder extends React.PureComponent {
     render() {
         var slots = [];
         for (let i = 0; i < 6; i++) {
-            slots.push(React.createElement(PokemonSlot_1.PokemonSlot, { ref: (slot) => this.state.slots.push(slot), key: "Pokemon_Slot_" + i, slotNumber: i, pokemon: this.props.pokemon }));
+            slots.push(React.createElement(PokemonSlot_1.default, { ref: (slot) => this.state.slots.push(slot), key: "Pokemon_Slot_" + i, slotNumber: i, pokemon: this.props.pokemon }));
         }
         var content = (React.createElement("div", null,
             React.createElement(react_bootstrap_1.Well, null,
                 React.createElement(react_bootstrap_1.ButtonGroup, null,
-                    React.createElement(react_bootstrap_1.Button, { onClick: () => this.proposeTeam(), id: "proposeTeamButton" }, "Propose Team"),
+                    React.createElement(react_bootstrap_1.Button, { onClick: this.proposeTeam, id: "proposeTeamButton" }, "Propose Team"),
                     React.createElement(react_bootstrap_1.Button, { id: "exportShowDownButton" }, "Export to ShowDown"),
                     React.createElement(react_bootstrap_1.Button, { id: "importShowDownButton" }, "Import from ShowDown"),
-                    React.createElement(react_bootstrap_1.Button, { onClick: () => this.resetAllSlots(), id: "clearButton" }, "Clear"))),
+                    React.createElement(react_bootstrap_1.Button, { onClick: this.resetAllSlots, id: "clearButton" }, "Clear"))),
             slots));
         return content;
     }
 }
-exports.TeamBuilder = TeamBuilder;
+exports.default = TeamBuilder;
 
 
 /***/ }),
-/* 283 */
+/* 279 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -21591,7 +21498,7 @@ class PokemonSlot extends React.PureComponent {
         if (this.state.pokemon) {
             image = React.createElement("img", { src: this.state.pokemon.GetImageUrl() });
             name = this.state.pokemon.name;
-            statDetail = React.createElement(PokemonDetail_1.PokemonDetail, { key: this.props.slotNumber + "_Stats", hideImage: true, buttonName: "Stats", pokemon: this.state.pokemon });
+            statDetail = React.createElement(PokemonDetail_1.default, { key: this.props.slotNumber + "_Stats", hideImage: true, buttonName: "Stats", pokemon: this.state.pokemon });
         }
         let options = Array.from(this.props.pokemon.keys())
             .map(name => { return { value: name, label: name }; });
@@ -21606,11 +21513,11 @@ class PokemonSlot extends React.PureComponent {
         return content;
     }
 }
-exports.PokemonSlot = PokemonSlot;
+exports.default = PokemonSlot;
 
 
 /***/ }),
-/* 284 */
+/* 280 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -21626,9 +21533,9 @@ exports.PokemonSlot = PokemonSlot;
 
 
 
-var _assign = __webpack_require__(285);
+var _assign = __webpack_require__(281);
 
-var emptyObject = __webpack_require__(286);
+var emptyObject = __webpack_require__(282);
 var _invariant = __webpack_require__(42);
 
 if (process.env.NODE_ENV !== 'production') {
@@ -22490,7 +22397,7 @@ module.exports = factory;
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(10)))
 
 /***/ }),
-/* 285 */
+/* 281 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -22587,7 +22494,7 @@ module.exports = shouldUseNative() ? Object.assign : function (target, source) {
 
 
 /***/ }),
-/* 286 */
+/* 282 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -22613,7 +22520,7 @@ module.exports = emptyObject;
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(10)))
 
 /***/ }),
-/* 287 */
+/* 283 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -22784,7 +22691,7 @@ var AutosizeInput = createClass({
 module.exports = AutosizeInput;
 
 /***/ }),
-/* 288 */
+/* 284 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -22814,7 +22721,7 @@ function arrowRenderer(_ref) {
 module.exports = exports["default"];
 
 /***/ }),
-/* 289 */
+/* 285 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -22842,7 +22749,7 @@ function clearRenderer() {
 module.exports = exports['default'];
 
 /***/ }),
-/* 290 */
+/* 286 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -23118,7 +23025,7 @@ function defaultChildren(props) {
 module.exports = exports['default'];
 
 /***/ }),
-/* 291 */
+/* 287 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -23189,7 +23096,7 @@ var AsyncCreatable = (0, _createReactClass2['default'])({
 module.exports = AsyncCreatable;
 
 /***/ }),
-/* 292 */
+/* 288 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -23523,7 +23430,7 @@ function shouldKeyDownEventCreateNewOption(_ref6) {
 module.exports = Creatable;
 
 /***/ }),
-/* 293 */
+/* 289 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -23646,7 +23553,7 @@ var Option = (0, _createReactClass2['default'])({
 module.exports = Option;
 
 /***/ }),
-/* 294 */
+/* 290 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -23766,7 +23673,7 @@ var Value = (0, _createReactClass2['default'])({
 module.exports = Value;
 
 /***/ }),
-/* 295 */
+/* 291 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -23778,7 +23685,7 @@ var TeamProposer;
     function proposeByTeammateStats(team, pokemon) {
         if (!team || !team.find(p => p !== null) || team.length === 0) {
             // If no data entered, get the pokemon with the highest usage as starting point and proceed
-            team = DataSorter_1.DataSorter.sortByUsage(pokemon.values(), true).slice(0, 1);
+            team = DataSorter_1.default.sortByUsage(pokemon.values(), true).slice(0, 1);
         }
         let proposedTeam = new Map();
         for (let i = 0; i < team.length; i++) {
@@ -23825,22 +23732,23 @@ var TeamProposer;
         return Array.from(proposedTeam.values());
     }
     TeamProposer.proposeByTeammateStats = proposeByTeammateStats;
-})(TeamProposer = exports.TeamProposer || (exports.TeamProposer = {}));
+})(TeamProposer || (TeamProposer = {}));
+exports.default = TeamProposer;
 
 
 /***/ }),
-/* 296 */
+/* 292 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-const Pokemon_1 = __webpack_require__(297);
-const Ability_1 = __webpack_require__(298);
-const Item_1 = __webpack_require__(299);
-const Move_1 = __webpack_require__(300);
-const Spread_1 = __webpack_require__(301);
-const TeamMate_1 = __webpack_require__(302);
+const Pokemon_1 = __webpack_require__(293);
+const Ability_1 = __webpack_require__(294);
+const Item_1 = __webpack_require__(295);
+const Move_1 = __webpack_require__(296);
+const Spread_1 = __webpack_require__(297);
+const TeamMate_1 = __webpack_require__(298);
 const DataSorter_1 = __webpack_require__(84);
 class StatParser {
     calculateAggregateSum(data) {
@@ -23865,28 +23773,28 @@ class StatParser {
             let statBase = this.calculateObjectBase(data.Abilities);
             let abilities = new Array();
             Object.keys(data.Abilities).forEach(key => {
-                abilities.push(new Ability_1.Ability({
+                abilities.push(new Ability_1.default({
                     name: key,
                     usageRate: this.calculatePercentage(statBase, data.Abilities[key])
                 }));
             });
             let items = new Array();
             Object.keys(data.Items).forEach(key => {
-                items.push(new Item_1.Item({
+                items.push(new Item_1.default({
                     name: key,
                     usageRate: this.calculatePercentage(statBase, data.Items[key])
                 }));
             });
             let moves = new Array();
             Object.keys(data.Moves).forEach(key => {
-                moves.push(new Move_1.Move({
+                moves.push(new Move_1.default({
                     name: key,
                     usageRate: this.calculatePercentage(statBase, data.Moves[key])
                 }));
             });
             let spreads = new Array();
             Object.keys(data.Spreads).forEach(key => {
-                spreads.push(new Spread_1.Spread({
+                spreads.push(new Spread_1.default({
                     name: key,
                     usageRate: this.calculatePercentage(statBase, data.Spreads[key])
                 }));
@@ -23894,38 +23802,38 @@ class StatParser {
             // teammate stats are % of teams with A that also have B - % of teams with B
             let teamMates = new Array();
             Object.keys(data.Teammates).forEach(key => {
-                teamMates.push(new TeamMate_1.TeamMate({
+                teamMates.push(new TeamMate_1.default({
                     name: key,
                     usageRate: this.calculatePercentage(statBase, data.Teammates[key])
                 }));
             });
             // We need to create an object using the constructor, otherwise its functions won't be available
-            let pokemon = new Pokemon_1.Pokemon({
+            let pokemon = new Pokemon_1.default({
                 name: entry,
-                abilities: DataSorter_1.DataSorter.sortByUsage(abilities, true),
+                abilities: DataSorter_1.default.sortByUsage(abilities, true),
                 checks_And_Counters: data["Checks and Counters"],
                 happiness: data.Happiness,
-                items: DataSorter_1.DataSorter.sortByUsage(items, true),
-                moves: DataSorter_1.DataSorter.sortByUsage(moves, true),
+                items: DataSorter_1.default.sortByUsage(items, true),
+                moves: DataSorter_1.default.sortByUsage(moves, true),
                 raw_Count: data["Raw count"],
-                spreads: DataSorter_1.DataSorter.sortByUsage(spreads, true),
-                teamMates: DataSorter_1.DataSorter.sortByUsage(teamMates, true),
+                spreads: DataSorter_1.default.sortByUsage(spreads, true),
+                teamMates: DataSorter_1.default.sortByUsage(teamMates, true),
                 usageRate: data.usage,
                 viability_Ceiling: data["Viability Ceiling"]
             });
             temp.push(pokemon);
         }
-        DataSorter_1.DataSorter.sortByName(temp).forEach(p => {
+        DataSorter_1.default.sortByName(temp).forEach(p => {
             stats.set(p.name, p);
         });
         return stats;
     }
 }
-exports.StatParser = StatParser;
+exports.default = StatParser;
 
 
 /***/ }),
-/* 297 */
+/* 293 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -23952,11 +23860,11 @@ class Pokemon {
             .replace('%', '')}.gif`;
     }
 }
-exports.Pokemon = Pokemon;
+exports.default = Pokemon;
 
 
 /***/ }),
-/* 298 */
+/* 294 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -23968,11 +23876,11 @@ class Ability {
         this.usageRate = props.usageRate;
     }
 }
-exports.Ability = Ability;
+exports.default = Ability;
 
 
 /***/ }),
-/* 299 */
+/* 295 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -23984,11 +23892,11 @@ class Item {
         this.usageRate = props.usageRate;
     }
 }
-exports.Item = Item;
+exports.default = Item;
 
 
 /***/ }),
-/* 300 */
+/* 296 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -24000,11 +23908,11 @@ class Move {
         this.usageRate = props.usageRate;
     }
 }
-exports.Move = Move;
+exports.default = Move;
 
 
 /***/ }),
-/* 301 */
+/* 297 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -24016,11 +23924,11 @@ class Spread {
         this.usageRate = props.usageRate;
     }
 }
-exports.Spread = Spread;
+exports.default = Spread;
 
 
 /***/ }),
-/* 302 */
+/* 298 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -24032,7 +23940,7 @@ class TeamMate {
         this.usageRate = props.usageRate;
     }
 }
-exports.TeamMate = TeamMate;
+exports.default = TeamMate;
 
 
 /***/ })
