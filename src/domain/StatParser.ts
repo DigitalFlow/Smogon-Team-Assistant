@@ -5,6 +5,7 @@ import Item from "../model/Item";
 import Move from "../model/Move";
 import Spread from "../model/Spread";
 import TeamMate from "../model/TeamMate";
+import Counter from "../model/Counter";
 import IAssociativeArray from "./IAssociativeArray";
 import DataSorter from "./DataSorter";
 
@@ -84,11 +85,22 @@ export default class StatParser {
                 }));
             });
 
+            let checksAndCounters = new Array<Counter>();
+            let checksAndCountersRaw = data["Checks and Counters"];
+            Object.keys(checksAndCountersRaw).forEach(key => {
+                checksAndCounters.push(new Counter({
+                    name: key, 
+                    // As in smogon usage stats batchMoveSetCounter
+                    usageRate: ((checksAndCountersRaw[key][1] - 4*checksAndCountersRaw[key][2]) * 100)
+                }));
+            }); ;
+
+
             // We need to create an object using the constructor, otherwise its functions won't be available
             let pokemon = new Pokemon({
                 name: entry,
                 abilities: DataSorter.sortByUsage(abilities, true),
-                checks_And_Counters: data["Checks and Counters"],
+                checks_And_Counters: DataSorter.sortByUsage(checksAndCounters, true),
                 happiness: data.Happiness,
                 items: DataSorter.sortByUsage(items, true),
                 moves: DataSorter.sortByUsage(moves, true),

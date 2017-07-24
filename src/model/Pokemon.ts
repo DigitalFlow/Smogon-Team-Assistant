@@ -3,12 +3,13 @@ import Item from "./Item"
 import Move from "./Move"
 import Spread from "./Spread"
 import TeamMate from "./TeamMate"
+import Counter from "./Counter"
 import IRankable from "../domain/IRankable"
 
 export interface PokemonProps {
     name: string; 
     abilities: Array<Ability>;
-    checks_And_Counters: object;
+    checks_And_Counters: Array<Counter>;
     happiness: object;
     items: Array<Item>;
     moves: Array<Move>;
@@ -22,7 +23,7 @@ export interface PokemonProps {
 export default class Pokemon implements PokemonProps, IRankable {
     name: string; 
     abilities: Array<Ability>;
-    checks_And_Counters: object;
+    checks_And_Counters: Array<Counter>;
     happiness: object;
     items: Array<Item>;
     moves: Array<Move>;

@@ -74,7 +74,7 @@ export default class PokemonDetail extends React.PureComponent<PokemonDetailProp
                                                 <td>{this.props.pokemon.name}</td>
                                             </tr>
                                             <tr>
-                                                <td>Usage Rate</td>
+                                                <td>Usage Rate (weighted)</td>
                                                 <td>{this.props.pokemon.usageRate}</td>
                                             </tr>
                                             <tr>
@@ -149,11 +149,25 @@ export default class PokemonDetail extends React.PureComponent<PokemonDetailProp
                                         <thead>
                                             <tr>
                                                 <th>Name</th>
-                                                <th>Usage Rate (%)</th>
+                                                <th>Teams with {this.props.pokemon.name} and X (%)</th>
                                             </tr>
                                         </thead>
                                         <tbody>
                                             {this.filterByUsageRate(this.props.pokemon.teamMates)
+                                                .map(IRankableView)}
+                                        </tbody>
+                                    </Table>
+                                </Tab>
+                                <Tab key={this.props.pokemon + "CountersTab"} eventKey={7} title="Checks and Counters">
+                                    <Table striped bordered condensed hover>
+                                        <thead>
+                                            <tr>
+                                                <th>Name</th>
+                                                <th>Counter Score</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {this.filterByUsageRate(this.props.pokemon.checks_And_Counters)
                                                 .map(IRankableView)}
                                         </tbody>
                                     </Table>

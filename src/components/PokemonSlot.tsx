@@ -20,6 +20,12 @@ export default class PokemonSlot extends React.PureComponent<PokemonSlotProps, P
         this.state = {
             pokemon: null
         };
+
+        this.onPokemonSelect = this.onPokemonSelect.bind(this);
+    }
+
+    onPokemonSelect(event: any) {
+        this.setState({pokemon: event ? this.props.pokemon.get(event.value) : null});
     }
 
     render(){
@@ -47,7 +53,7 @@ export default class PokemonSlot extends React.PureComponent<PokemonSlotProps, P
                                     name={this.props.slotNumber + "pokemonSelect"}
                                     options={options}
                                     value={name}
-                                    onChange={(event: any) => this.setState({pokemon: this.props.pokemon.get(event.value)})}
+                                    onChange={this.onPokemonSelect}
                                 />
                             </Col>
                         </Row>
