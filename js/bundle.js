@@ -9614,7 +9614,7 @@ class PokemonDetail extends React.PureComponent {
                                                     React.createElement("td", null, "Name"),
                                                     React.createElement("td", null, this.props.pokemon.name)),
                                                 React.createElement("tr", null,
-                                                    React.createElement("td", null, "Usage Rate (weighted)"),
+                                                    React.createElement("td", null, "Usage (%)"),
                                                     React.createElement("td", null, this.props.pokemon.usageRate)),
                                                 React.createElement("tr", null,
                                                     React.createElement("td", null, "Raw Count"),
@@ -23862,7 +23862,7 @@ class StatParser {
                 raw_Count: data["Raw count"],
                 spreads: DataSorter_1.default.sortByUsage(spreads, true),
                 teamMates: DataSorter_1.default.sortByUsage(teamMates, true),
-                usageRate: data.usage,
+                usageRate: data.usage * 100,
                 viability_Ceiling: data["Viability Ceiling"]
             });
             temp.push(pokemon);
