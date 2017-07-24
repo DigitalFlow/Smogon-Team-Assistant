@@ -9614,7 +9614,7 @@ class PokemonDetail extends React.PureComponent {
                                                     React.createElement("td", null, "Name"),
                                                     React.createElement("td", null, this.props.pokemon.name)),
                                                 React.createElement("tr", null,
-                                                    React.createElement("td", null, "Usage Rate"),
+                                                    React.createElement("td", null, "Usage Rate (weighted)"),
                                                     React.createElement("td", null, this.props.pokemon.usageRate)),
                                                 React.createElement("tr", null,
                                                     React.createElement("td", null, "Raw Count"),
@@ -9659,8 +9659,19 @@ class PokemonDetail extends React.PureComponent {
                                             React.createElement("thead", null,
                                                 React.createElement("tr", null,
                                                     React.createElement("th", null, "Name"),
-                                                    React.createElement("th", null, "Usage Rate (%)"))),
+                                                    React.createElement("th", null,
+                                                        "Teams with ",
+                                                        this.props.pokemon.name,
+                                                        " and X (%)"))),
                                             React.createElement("tbody", null, this.filterByUsageRate(this.props.pokemon.teamMates)
+                                                .map(IRankableView_1.default)))),
+                                    React.createElement(react_bootstrap_1.Tab, { key: this.props.pokemon + "CountersTab", eventKey: 7, title: "Checks and Counters" },
+                                        React.createElement(react_bootstrap_1.Table, { striped: true, bordered: true, condensed: true, hover: true },
+                                            React.createElement("thead", null,
+                                                React.createElement("tr", null,
+                                                    React.createElement("th", null, "Name"),
+                                                    React.createElement("th", null, "Counter Score"))),
+                                            React.createElement("tbody", null, this.filterByUsageRate(this.props.pokemon.checks_And_Counters)
                                                 .map(IRankableView_1.default)))))))));
         }
         return (React.createElement("div", { key: this.props.pokemon.name + "_Detail" },
@@ -9882,7 +9893,25 @@ class App extends React.PureComponent {
                     React.createElement("br", null),
                     "Head over to ",
                     React.createElement("a", { href: "http://www.smogon.com/stats/2017-06/chaos/" }, "Smogon stats"),
-                    ", download the stats file you'd like and load it."));
+                    ", download the stats file you'd like and load it."),
+                React.createElement("h2", null, "But which file to choose?"),
+                React.createElement("h3", null, "Gen"),
+                React.createElement("p", null,
+                    "The gen part of the file name represents the Pokemon Generation that those stats are for.",
+                    React.createElement("br", null),
+                    "Gen 7 is for Sun / Moon, Gen 6 for ORAS / XY, and so on."),
+                React.createElement("h3", null, "Tier"),
+                React.createElement("p", null,
+                    "There are different Tiers, which are calculated by usage. The Smogon standard tier is OU.",
+                    React.createElement("br", null),
+                    "If you don't care for tiers, choose AG, as this has no Pokemon banned."),
+                React.createElement("h3", null, "Baseline"),
+                React.createElement("p", null,
+                    "The baseline represents a rating of the players that the stats were gathered from.",
+                    React.createElement("br", null),
+                    "The higher the base line, the better the players that contributed to those stats.",
+                    React.createElement("br", null),
+                    "Obviously, for determining movesets etc. you'll want the highest base line stats. However those most often don't contain any Checks and Counters data, so if you want to analyze these, choose 0 or 1500 baseline stats."));
         }
         return (React.createElement("div", null,
             React.createElement(react_bootstrap_1.Navbar, { inverse: true, collapseOnSelect: true },
@@ -21490,6 +21519,10 @@ class PokemonSlot extends React.PureComponent {
         this.state = {
             pokemon: null
         };
+        this.onPokemonSelect = this.onPokemonSelect.bind(this);
+    }
+    onPokemonSelect(event) {
+        this.setState({ pokemon: event ? this.props.pokemon.get(event.value) : null });
     }
     render() {
         let image = null;
@@ -21508,7 +21541,7 @@ class PokemonSlot extends React.PureComponent {
                 React.createElement(react_bootstrap_1.Grid, null,
                     React.createElement(react_bootstrap_1.Row, { className: "show-grid" },
                         React.createElement(react_bootstrap_1.Col, null,
-                            React.createElement(Select, { name: this.props.slotNumber + "pokemonSelect", options: options, value: name, onChange: (event) => this.setState({ pokemon: this.props.pokemon.get(event.value) }) })))),
+                            React.createElement(Select, { name: this.props.slotNumber + "pokemonSelect", options: options, value: name, onChange: this.onPokemonSelect })))),
                 statDetail)));
         return content;
     }
@@ -23749,6 +23782,7 @@ const Item_1 = __webpack_require__(295);
 const Move_1 = __webpack_require__(296);
 const Spread_1 = __webpack_require__(297);
 const TeamMate_1 = __webpack_require__(298);
+const Counter_1 = __webpack_require__(299);
 const DataSorter_1 = __webpack_require__(84);
 class StatParser {
     calculateAggregateSum(data) {
@@ -23807,11 +23841,21 @@ class StatParser {
                     usageRate: this.calculatePercentage(statBase, data.Teammates[key])
                 }));
             });
+            let checksAndCounters = new Array();
+            let checksAndCountersRaw = data["Checks and Counters"];
+            Object.keys(checksAndCountersRaw).forEach(key => {
+                checksAndCounters.push(new Counter_1.default({
+                    name: key,
+                    // As in smogon usage stats batchMoveSetCounter
+                    usageRate: ((checksAndCountersRaw[key][1] - 4 * checksAndCountersRaw[key][2]) * 100)
+                }));
+            });
+            ;
             // We need to create an object using the constructor, otherwise its functions won't be available
             let pokemon = new Pokemon_1.default({
                 name: entry,
                 abilities: DataSorter_1.default.sortByUsage(abilities, true),
-                checks_And_Counters: data["Checks and Counters"],
+                checks_And_Counters: DataSorter_1.default.sortByUsage(checksAndCounters, true),
                 happiness: data.Happiness,
                 items: DataSorter_1.default.sortByUsage(items, true),
                 moves: DataSorter_1.default.sortByUsage(moves, true),
@@ -23941,6 +23985,22 @@ class TeamMate {
     }
 }
 exports.default = TeamMate;
+
+
+/***/ }),
+/* 299 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+class Counter {
+    constructor(props) {
+        this.name = props.name;
+        this.usageRate = props.usageRate;
+    }
+}
+exports.default = Counter;
 
 
 /***/ })
