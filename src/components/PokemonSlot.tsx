@@ -1,8 +1,8 @@
 import * as React from "react";
 import { Well, MenuItem, Grid, DropdownButton, ButtonGroup, Col, Row } from "react-bootstrap";
 import Select = require("react-select");
-import { Pokemon } from "../model/Pokemon";
-import { PokemonDetail } from "./PokemonDetail";
+import Pokemon from "../model/Pokemon";
+import PokemonDetail from "./PokemonDetail";
 
 export interface PokemonSlotProps {
     slotNumber: number;
@@ -13,7 +13,7 @@ class PokemonSlotState {
     pokemon: Pokemon;
 }
 
-export class PokemonSlot extends React.PureComponent<PokemonSlotProps, PokemonSlotState> {
+export default class PokemonSlot extends React.PureComponent<PokemonSlotProps, PokemonSlotState> {
     constructor(props: PokemonSlotProps){
         super(props);
 

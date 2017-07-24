@@ -1,8 +1,8 @@
 import * as React from "react";
 import { ButtonGroup, DropdownButton, Button, Well } from "react-bootstrap";
-import { Pokemon } from "../model/Pokemon";
-import { PokemonSlot } from "./PokemonSlot";
-import { TeamProposer } from "../domain/TeamProposer";
+import Pokemon from "../model/Pokemon";
+import PokemonSlot from "./PokemonSlot";
+import TeamProposer from "../domain/TeamProposer";
 
 export interface TeamBuilderProps {
     pokemon: Map<string, Pokemon>;
@@ -12,7 +12,7 @@ class TeamBuilderState {
     slots: Array<PokemonSlot>;
 }
 
-export class TeamBuilder extends React.PureComponent<TeamBuilderProps, TeamBuilderState> {
+export default class TeamBuilder extends React.PureComponent<TeamBuilderProps, TeamBuilderState> {
     constructor(props: TeamBuilderProps){
         super(props);
 
@@ -53,10 +53,10 @@ export class TeamBuilder extends React.PureComponent<TeamBuilderProps, TeamBuild
             (<div>
                 <Well>
                     <ButtonGroup>
-                        <Button onClick={() => this.proposeTeam()} id="proposeTeamButton">Propose Team</Button>
+                        <Button onClick={this.proposeTeam} id="proposeTeamButton">Propose Team</Button>
                         <Button id="exportShowDownButton">Export to ShowDown</Button>
                         <Button id="importShowDownButton">Import from ShowDown</Button>
-                        <Button onClick={() => this.resetAllSlots()} id="clearButton">Clear</Button>
+                        <Button onClick={this.resetAllSlots} id="clearButton">Clear</Button>
                     </ButtonGroup>
                 </Well>
                 { slots }

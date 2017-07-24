@@ -1,11 +1,11 @@
-import { IRankable } from "../domain/IRankable"
+import IRankable from "../domain/IRankable"
 
 export interface SpreadProps {
     name: string;
     usageRate: number;
 }
 
-export class Spread implements IRankable {
+export default class Spread implements IRankable {
     name: string;
     usageRate: number;
 

@@ -1,7 +1,7 @@
-import { IRankable } from "./IRankable";
-import { Pokemon } from "../model/Pokemon";
+import IRankable from "./IRankable";
+import Pokemon from "../model/Pokemon";
 
-export module DataSorter {
+module DataSorter {
     export function sortByUsage<T extends IRankable>(data: IterableIterator<T> | Array<T>, descending?: boolean) {
         var multiplier = descending ? -1 : 1;
         var array = Array.from(data);
@@ -47,3 +47,5 @@ export module DataSorter {
         return sorted;
     }
 }
+
+export default DataSorter;

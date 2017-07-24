@@ -1,8 +1,8 @@
 import * as React from "react";
 import { ButtonGroup, DropdownButton, MenuItem, Well } from "react-bootstrap";
-import { Pokemon } from "../model/Pokemon";
-import { PokemonDetail } from "./PokemonDetail";
-import { DataSorter } from "../domain/DataSorter";
+import Pokemon from "../model/Pokemon";
+import PokemonDetail from "./PokemonDetail";
+import DataSorter from "../domain/DataSorter";
 
 export enum OrderBy {
     Name = 1,
@@ -19,7 +19,7 @@ class StatOverviewState {
     descendingOrder: boolean;
 }
 
-export class StatOverview extends React.PureComponent<StatOverviewProps, StatOverviewState> {
+export default class StatOverview extends React.PureComponent<StatOverviewProps, StatOverviewState> {
     constructor(props: StatOverviewProps){
         super(props);
 

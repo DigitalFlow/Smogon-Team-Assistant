@@ -1,13 +1,8 @@
 import * as React from "react";
-import { Pokemon } from "../Model/Pokemon";
-import { PokemonProps } from "../Model/Pokemon";
+import Pokemon from "../Model/Pokemon";
 import { Button, Panel, Grid, Row, Col, Tabs, Tab, Table } from "react-bootstrap";
-import { AbilityView } from "./AbilityView";
-import { ItemView } from "./ItemView";
-import { MoveView } from "./MoveView";
-import { SpreadView } from "./SpreadView";
-import { TeamMateView } from "./TeamMateView";
-import { IRankable } from "../domain/IRankable";
+import IRankableView from "./IRankableView";
+import IRankable from "../domain/IRankable";
 
 export interface PokemonDetailProps { 
     pokemon: Pokemon;
@@ -21,7 +16,7 @@ class PokemonDetailState {
 
 // 'HelloProps' describes the shape of props.
 // State is never set so we use the 'undefined' type.
-export class PokemonDetail extends React.PureComponent<PokemonDetailProps, PokemonDetailState> {
+export default class PokemonDetail extends React.PureComponent<PokemonDetailProps, PokemonDetailState> {
     constructor(props: PokemonDetailProps) {
         super(props);
         this.state = {
@@ -103,7 +98,7 @@ export class PokemonDetail extends React.PureComponent<PokemonDetailProps, Pokem
                                         </thead>
                                         <tbody>
                                             {this.filterByUsageRate(this.props.pokemon.moves)
-                                                .map(move => <MoveView move={move}/>)}
+                                                .map(IRankableView)}
                                         </tbody>
                                     </Table>
                                 </Tab>
@@ -116,7 +111,8 @@ export class PokemonDetail extends React.PureComponent<PokemonDetailProps, Pokem
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            {this.props.pokemon.abilities.map(ability => <AbilityView ability={ability}/>)}
+                                            {this.props.pokemon.abilities
+                                                .map(IRankableView)}
                                         </tbody>
                                     </Table>
                                 </Tab>
@@ -130,7 +126,7 @@ export class PokemonDetail extends React.PureComponent<PokemonDetailProps, Pokem
                                         </thead>
                                         <tbody>
                                             {this.filterByUsageRate(this.props.pokemon.items)
-                                                .map(item => <ItemView item={item}/>)}
+                                                .map(IRankableView)}
                                         </tbody>
                                     </Table>
                                 </Tab>
@@ -144,7 +140,7 @@ export class PokemonDetail extends React.PureComponent<PokemonDetailProps, Pokem
                                         </thead>
                                         <tbody>
                                             {this.filterByUsageRate(this.props.pokemon.spreads)
-                                                .map(spread => <SpreadView spread={spread}/>)}
+                                                .map(IRankableView)}
                                         </tbody>
                                     </Table>
                                 </Tab>
@@ -158,7 +154,7 @@ export class PokemonDetail extends React.PureComponent<PokemonDetailProps, Pokem
                                         </thead>
                                         <tbody>
                                             {this.filterByUsageRate(this.props.pokemon.teamMates)
-                                                .map(tM => <TeamMateView teamMate={tM}/>)}
+                                                .map(IRankableView)}
                                         </tbody>
                                     </Table>
                                 </Tab>

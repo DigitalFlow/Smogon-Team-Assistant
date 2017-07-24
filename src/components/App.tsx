@@ -1,13 +1,9 @@
 import * as React from "react";
-import { PokemonDetail } from "./PokemonDetail";
-import { PokemonDetailProps } from "./PokemonDetail";
-import { StatOverview } from "./StatOverview";
-import { TeamBuilder } from "./TeamBuilder";
-import { Pokemon } from "../model/pokemon";
+import StatOverview from "./StatOverview";
+import TeamBuilder from "./TeamBuilder";
+import Pokemon from "../model/pokemon";
 import { Navbar, Nav, NavItem, MenuItem, NavDropdown, Jumbotron } from "react-bootstrap";
-import { IRankable } from "../domain/IRankable";
-import { StatParser } from "../domain/StatParser";
-import { DataSorter } from "../domain/DataSorter";
+import StatParser from "../domain/StatParser";
 
 export interface AppProps { }
 
@@ -21,7 +17,7 @@ enum ViewState {
     TeamBuilder
 }
 
-export class App extends React.PureComponent<AppProps, AppState> {
+export default class App extends React.PureComponent<AppProps, AppState> {
     fileInput: HTMLInputElement;
 
     constructor(props: AppProps){

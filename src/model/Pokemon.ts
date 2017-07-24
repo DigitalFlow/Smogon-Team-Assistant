@@ -1,9 +1,9 @@
-import { Ability } from "./Ability"
-import { Item } from "./Item"
-import { Move } from "./Move"
-import { Spread } from "./Spread"
-import { TeamMate } from "./TeamMate"
-import { IRankable } from "../domain/IRankable"
+import Ability from "./Ability"
+import Item from "./Item"
+import Move from "./Move"
+import Spread from "./Spread"
+import TeamMate from "./TeamMate"
+import IRankable from "../domain/IRankable"
 
 export interface PokemonProps {
     name: string; 
@@ -19,7 +19,7 @@ export interface PokemonProps {
     usageRate: number;
 }
 
-export class Pokemon implements PokemonProps, IRankable {
+export default class Pokemon implements PokemonProps, IRankable {
     name: string; 
     abilities: Array<Ability>;
     checks_And_Counters: object;

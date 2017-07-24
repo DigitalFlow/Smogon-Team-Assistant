@@ -1,7 +1,7 @@
-import { Pokemon } from "../model/Pokemon";
-import { DataSorter } from "./DataSorter";
+import Pokemon from "../model/Pokemon";
+import DataSorter from "./DataSorter";
 
-export module TeamProposer {
+module TeamProposer {
     export function proposeByTeammateStats(team: Array<Pokemon>, pokemon: Map<string, Pokemon>) {
         if (!team || !team.find(p => p !== null) || team.length === 0) {
             // If no data entered, get the pokemon with the highest usage as starting point and proceed
@@ -70,3 +70,5 @@ export module TeamProposer {
         return Array.from(proposedTeam.values());
     }
 }
+
+export default TeamProposer;

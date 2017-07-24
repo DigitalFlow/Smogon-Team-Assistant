@@ -1,19 +1,19 @@
-import { Pokemon } from "../model/Pokemon";
-import { IRankable } from "./IRankable";
-import { Ability } from "../model/Ability";
-import { Item } from "../model/Item";
-import { Move } from "../model/Move";
-import { Spread } from "../model/Spread";
-import { TeamMate } from "../model/TeamMate";
-import { IAssociativeArray } from "./IAssociativeArray";
-import { DataSorter } from "./DataSorter";
+import Pokemon from "../model/Pokemon";
+import IRankable from "./IRankable";
+import Ability from "../model/Ability";
+import Item from "../model/Item";
+import Move from "../model/Move";
+import Spread from "../model/Spread";
+import TeamMate from "../model/TeamMate";
+import IAssociativeArray from "./IAssociativeArray";
+import DataSorter from "./DataSorter";
 
 interface SmogonFile {
     data: IAssociativeArray;
     info: object;
 }
 
-export class StatParser {
+export default class StatParser {
     private calculateAggregateSum (data: Array<number>) {
         var sum = data.reduce(function(acc: number, val: number) {
             return acc + val;

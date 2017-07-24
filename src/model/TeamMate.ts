@@ -1,11 +1,11 @@
-import { IRankable } from "../domain/IRankable"
+import IRankable from "../domain/IRankable"
 
 export interface TeamMateProps {
     name: string;
     usageRate: number;
 }
 
-export class TeamMate implements IRankable {
+export default class TeamMate implements IRankable {
     name: string;
     usageRate: number;
 
