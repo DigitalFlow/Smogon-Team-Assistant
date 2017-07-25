@@ -11,7 +11,6 @@ export interface TeamBuilderProps {
 class TeamBuilderState {
     slots: Array<PokemonSlot>;
     showExport: boolean;
-    exportText: JSX.Element[];
 }
 
 export default class TeamBuilder extends React.PureComponent<TeamBuilderProps, TeamBuilderState> {
@@ -20,8 +19,7 @@ export default class TeamBuilder extends React.PureComponent<TeamBuilderProps, T
 
         this.state = {
             slots: new Array<PokemonSlot>(),
-            showExport: false,
-            exportText: null
+            showExport: false
         };
         
         this.proposeTeam = this.proposeTeam.bind(this);
@@ -43,8 +41,28 @@ export default class TeamBuilder extends React.PureComponent<TeamBuilderProps, T
     }
 
     exportTeam() {
+        this.setState({showExport: true})
+    }
+
+    close() {
+        this.setState({ showExport: false });
+    }
+
+    resetAllSlots() {
+        this.state.slots.forEach(slot => {
+            slot.setState({pokemon: null});
+        });
+    }
+
+    render(){
+        var slots = [];
+
+        for (let i = 0; i < 6; i++) {
+            slots.push(<PokemonSlot ref={(slot) => this.state.slots.push(slot)} key={"Pokemon_Slot_" + i} slotNumber={i} pokemon={this.props.pokemon} />);
+        }
+
         let teamExport = this.state.slots.map(slot => {
-            if (!slot.state.pokemon) {
+            if (!slot || !slot.state || !slot.state.pokemon) {
                return <p/>;
             }
 
@@ -77,26 +95,6 @@ export default class TeamBuilder extends React.PureComponent<TeamBuilderProps, T
                 - {memberConfig.move4}<br/><br />
             </p>);
         });
-            
-        this.setState({showExport: true, exportText: teamExport})
-    }
-
-    close() {
-        this.setState({ showExport: false });
-    }
-
-    resetAllSlots() {
-        this.state.slots.forEach(slot => {
-            slot.setState({pokemon: null});
-        });
-    }
-
-    render(){
-        var slots = [];
-
-        for (let i = 0; i < 6; i++) {
-            slots.push(<PokemonSlot ref={(slot) => this.state.slots.push(slot)} key={"Pokemon_Slot_" + i} slotNumber={i} pokemon={this.props.pokemon} />);
-        }
 
         var content =
             (<div>
@@ -105,7 +103,7 @@ export default class TeamBuilder extends React.PureComponent<TeamBuilderProps, T
                         <Modal.Title>Showdown Export</Modal.Title>
                     </Modal.Header>
                     <Modal.Body>
-                        {this.state.exportText}
+                        {teamExport}
                     </Modal.Body>
                     <Modal.Footer>
                         <Button onClick={this.close}>Close</Button>
