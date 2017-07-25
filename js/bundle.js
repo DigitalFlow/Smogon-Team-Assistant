@@ -21464,8 +21464,7 @@ class TeamBuilder extends React.PureComponent {
         super(props);
         this.state = {
             slots: new Array(),
-            showExport: false,
-            exportText: null
+            showExport: false
         };
         this.proposeTeam = this.proposeTeam.bind(this);
         this.resetAllSlots = this.resetAllSlots.bind(this);
@@ -21481,8 +21480,23 @@ class TeamBuilder extends React.PureComponent {
         }
     }
     exportTeam() {
+        this.setState({ showExport: true });
+    }
+    close() {
+        this.setState({ showExport: false });
+    }
+    resetAllSlots() {
+        this.state.slots.forEach(slot => {
+            slot.setState({ pokemon: null });
+        });
+    }
+    render() {
+        var slots = [];
+        for (let i = 0; i < 6; i++) {
+            slots.push(React.createElement(PokemonSlot_1.default, { ref: (slot) => this.state.slots.push(slot), key: "Pokemon_Slot_" + i, slotNumber: i, pokemon: this.props.pokemon }));
+        }
         let teamExport = this.state.slots.map(slot => {
-            if (!slot.state.pokemon) {
+            if (!slot || !slot.state || !slot.state.pokemon) {
                 return React.createElement("p", null);
             }
             let memberConfig = slot.state.form.state;
@@ -21527,26 +21541,11 @@ class TeamBuilder extends React.PureComponent {
                 React.createElement("br", null),
                 React.createElement("br", null)));
         });
-        this.setState({ showExport: true, exportText: teamExport });
-    }
-    close() {
-        this.setState({ showExport: false });
-    }
-    resetAllSlots() {
-        this.state.slots.forEach(slot => {
-            slot.setState({ pokemon: null });
-        });
-    }
-    render() {
-        var slots = [];
-        for (let i = 0; i < 6; i++) {
-            slots.push(React.createElement(PokemonSlot_1.default, { ref: (slot) => this.state.slots.push(slot), key: "Pokemon_Slot_" + i, slotNumber: i, pokemon: this.props.pokemon }));
-        }
         var content = (React.createElement("div", null,
             React.createElement(react_bootstrap_1.Modal, { show: this.state.showExport, onHide: this.close },
                 React.createElement(react_bootstrap_1.Modal.Header, { closeButton: true },
                     React.createElement(react_bootstrap_1.Modal.Title, null, "Showdown Export")),
-                React.createElement(react_bootstrap_1.Modal.Body, null, this.state.exportText),
+                React.createElement(react_bootstrap_1.Modal.Body, null, teamExport),
                 React.createElement(react_bootstrap_1.Modal.Footer, null,
                     React.createElement(react_bootstrap_1.Button, { onClick: this.close }, "Close"))),
             React.createElement(react_bootstrap_1.Well, null,
