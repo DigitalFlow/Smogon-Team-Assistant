@@ -23898,9 +23898,9 @@ class Pokemon {
         this.usageRate = parameters.usageRate;
     }
     GetImageUrl() {
-        return `http://www.smogon.com/dex/media/sprites/xy/${this.name
+        return `https://play.pokemonshowdown.com/sprites/xyani/${this.name
             .toLowerCase()
-            .replace(' ', "_")
+            .replace(' ', "")
             .replace('%', '')}.gif`;
     }
 }
