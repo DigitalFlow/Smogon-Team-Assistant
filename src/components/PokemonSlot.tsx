@@ -1,8 +1,9 @@
 import * as React from "react";
-import { Well, MenuItem, Grid, DropdownButton, ButtonGroup, Col, Row } from "react-bootstrap";
+import { ControlLabel, Well, MenuItem, Grid, DropdownButton, ButtonGroup, Col, Row } from "react-bootstrap";
 import Select = require("react-select");
 import Pokemon from "../model/Pokemon";
 import PokemonDetail from "./PokemonDetail";
+import PropertyForm from "./PropertyForm";
 
 export interface PokemonSlotProps {
     slotNumber: number;
@@ -11,6 +12,7 @@ export interface PokemonSlotProps {
 
 class PokemonSlotState {
     pokemon: Pokemon;
+    form: PropertyForm;
 }
 
 export default class PokemonSlot extends React.PureComponent<PokemonSlotProps, PokemonSlotState> {
@@ -18,24 +20,35 @@ export default class PokemonSlot extends React.PureComponent<PokemonSlotProps, P
         super(props);
 
         this.state = {
-            pokemon: null
+            pokemon: null,
+            form: null
         };
 
         this.onPokemonSelect = this.onPokemonSelect.bind(this);
+        this.setForm = this.setForm.bind(this);
     }
 
     onPokemonSelect(event: any) {
-        this.setState({pokemon: event ? this.props.pokemon.get(event.value) : null});
+        let pokemon = event ? this.props.pokemon.get(event.value) : null;
+        
+        this.setState({
+            pokemon: pokemon,
+        });
+    }
+
+    setForm(form: PropertyForm) {
+        this.setState({form: form});
     }
 
     render(){
         let image = null;
         let name = null;
         let statDetail = null;
+        let pokemon = this.state.pokemon;
 
-        if(this.state.pokemon) {
-            image = <img src={this.state.pokemon.GetImageUrl()} />;
-            name = this.state.pokemon.name;
+        if(pokemon) {
+            image = <img src={pokemon.GetImageUrl()} />;
+            name = pokemon.name;
             statDetail = <PokemonDetail key={this.props.slotNumber + "_Stats"} hideImage={true} buttonName={"Stats"} pokemon={this.state.pokemon} />
         }
 
@@ -49,6 +62,7 @@ export default class PokemonSlot extends React.PureComponent<PokemonSlotProps, P
                     <Grid>
                         <Row className="show-grid">
                             <Col>
+                                <ControlLabel className="col-sm-8">{"Pokemon"}</ControlLabel>
                                 <Select
                                     name={this.props.slotNumber + "pokemonSelect"}
                                     options={options}
@@ -58,6 +72,7 @@ export default class PokemonSlot extends React.PureComponent<PokemonSlotProps, P
                             </Col>
                         </Row>
                     </Grid>
+                    <PropertyForm ref={this.setForm} key={this.props.slotNumber + "_PropertyForm"} pokemon={pokemon} />
                     { statDetail }
                 </Well>
             </div>);
