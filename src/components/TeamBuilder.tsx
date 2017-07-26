@@ -125,7 +125,6 @@ export default class TeamBuilder extends React.PureComponent<TeamBuilderProps, T
                     <ButtonGroup>
                         <Button onClick={this.proposeTeam} id="proposeTeamButton">Propose Team</Button>
                         <Button onClick={this.exportTeam} id="exportShowDownButton">Export to ShowDown</Button>
-                        <Button id="importShowDownButton">Import from ShowDown</Button>
                         <Button onClick={this.resetAllSlots} id="clearButton">Clear</Button>
                     </ButtonGroup>
                 </Well>
