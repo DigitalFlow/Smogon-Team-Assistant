@@ -9886,32 +9886,34 @@ class App extends React.PureComponent {
             }
         }
         else {
-            content = React.createElement(react_bootstrap_1.Jumbotron, null,
-                React.createElement("h1", null, "No data loaded!"),
-                React.createElement("p", null,
-                    "For showing information, data from Smogon needs to be loaded.",
-                    React.createElement("br", null),
-                    "Head over to ",
-                    React.createElement("a", { href: "http://www.smogon.com/stats/2017-06/chaos/" }, "Smogon stats"),
-                    ", download the stats file you'd like and load it."),
-                React.createElement("h2", null, "But which file to choose?"),
-                React.createElement("h3", null, "Gen"),
-                React.createElement("p", null,
-                    "The gen part of the file name represents the Pokemon Generation that those stats are for.",
-                    React.createElement("br", null),
-                    "Gen 7 is for Sun / Moon, Gen 6 for ORAS / XY, and so on."),
-                React.createElement("h3", null, "Tier"),
-                React.createElement("p", null,
-                    "There are different Tiers, which are calculated by usage. The Smogon standard tier is OU.",
-                    React.createElement("br", null),
-                    "If you don't care for tiers, choose AG, as this has no Pokemon banned."),
-                React.createElement("h3", null, "Baseline"),
-                React.createElement("p", null,
-                    "The baseline represents a rating of the players that the stats were gathered from.",
-                    React.createElement("br", null),
-                    "The higher the base line, the better the players that contributed to those stats.",
-                    React.createElement("br", null),
-                    "Obviously, for determining movesets etc. you'll want the highest base line stats. However those most often don't contain any Checks and Counters data, so if you want to analyze these, choose 0 or 1500 baseline stats."));
+            content =
+                React.createElement(react_bootstrap_1.Well, null,
+                    React.createElement(react_bootstrap_1.Jumbotron, null,
+                        React.createElement("h1", null, "No data loaded!"),
+                        React.createElement("p", null,
+                            "For showing information, data from Smogon needs to be loaded.",
+                            React.createElement("br", null),
+                            "Head over to ",
+                            React.createElement("a", { href: "http://www.smogon.com/stats/2017-06/chaos/" }, "Smogon stats"),
+                            ", download the stats file you'd like and load it."),
+                        React.createElement("h2", null, "But which file to choose?"),
+                        React.createElement("h3", null, "Gen"),
+                        React.createElement("p", null,
+                            "The gen part of the file name represents the Pokemon Generation that those stats are for.",
+                            React.createElement("br", null),
+                            "Gen 7 is for Sun / Moon, Gen 6 for ORAS / XY, and so on."),
+                        React.createElement("h3", null, "Tier"),
+                        React.createElement("p", null,
+                            "There are different Tiers, which are calculated by usage. The Smogon standard tier is OU.",
+                            React.createElement("br", null),
+                            "If you don't care for tiers, choose AG, as this has no Pokemon banned."),
+                        React.createElement("h3", null, "Baseline"),
+                        React.createElement("p", null,
+                            "The baseline represents a rating of the players that the stats were gathered from.",
+                            React.createElement("br", null),
+                            "The higher the base line, the better the players that contributed to those stats.",
+                            React.createElement("br", null),
+                            "Obviously, for determining movesets etc. you'll want the highest base line stats. However those most often don't contain any Checks and Counters data, so if you want to analyze these, choose 0 or 1500 baseline stats.")));
         }
         return (React.createElement("div", null,
             React.createElement(react_bootstrap_1.Navbar, { inverse: true, collapseOnSelect: true },
@@ -21463,19 +21465,30 @@ class TeamBuilder extends React.PureComponent {
     constructor(props) {
         super(props);
         this.state = {
-            slots: new Array(),
+            slot1: null,
+            slot2: null,
+            slot3: null,
+            slot4: null,
+            slot5: null,
+            slot6: null,
             showExport: false
         };
         this.proposeTeam = this.proposeTeam.bind(this);
         this.resetAllSlots = this.resetAllSlots.bind(this);
         this.exportTeam = this.exportTeam.bind(this);
         this.close = this.close.bind(this);
+        this.getSlots = this.getSlots.bind(this);
+    }
+    getSlots() {
+        return [this.state.slot1, this.state.slot2, this.state.slot3,
+            this.state.slot4, this.state.slot5, this.state.slot6];
     }
     proposeTeam() {
-        var currentTeam = this.state.slots.map(s => s.state.pokemon);
+        let slots = this.getSlots();
+        let currentTeam = slots.map(s => s.state.pokemon);
         var proposedTeam = TeamProposer_1.default.proposeByTeammateStats(currentTeam, this.props.pokemon);
-        for (let i = 0; i < this.state.slots.length; i++) {
-            let slot = this.state.slots[i];
+        for (let i = 0; i < slots.length; i++) {
+            let slot = slots[i];
             slot.setState({ pokemon: proposedTeam[i] });
         }
     }
@@ -21486,16 +21499,12 @@ class TeamBuilder extends React.PureComponent {
         this.setState({ showExport: false });
     }
     resetAllSlots() {
-        this.state.slots.forEach(slot => {
+        this.getSlots().forEach(slot => {
             slot.setState({ pokemon: null });
         });
     }
     render() {
-        var slots = [];
-        for (let i = 0; i < 6; i++) {
-            slots.push(React.createElement(PokemonSlot_1.default, { ref: (slot) => this.state.slots.push(slot), key: "Pokemon_Slot_" + i, slotNumber: i, pokemon: this.props.pokemon }));
-        }
-        let teamExport = this.state.slots.map(slot => {
+        let teamExport = this.getSlots().map(slot => {
             if (!slot || !slot.state || !slot.state.pokemon) {
                 return React.createElement("p", null);
             }
@@ -21552,9 +21561,13 @@ class TeamBuilder extends React.PureComponent {
                 React.createElement(react_bootstrap_1.ButtonGroup, null,
                     React.createElement(react_bootstrap_1.Button, { onClick: this.proposeTeam, id: "proposeTeamButton" }, "Propose Team"),
                     React.createElement(react_bootstrap_1.Button, { onClick: this.exportTeam, id: "exportShowDownButton" }, "Export to ShowDown"),
-                    React.createElement(react_bootstrap_1.Button, { id: "importShowDownButton" }, "Import from ShowDown"),
                     React.createElement(react_bootstrap_1.Button, { onClick: this.resetAllSlots, id: "clearButton" }, "Clear"))),
-            slots));
+            React.createElement(PokemonSlot_1.default, { ref: (s => { this.setState({ slot1: s }); }), pokemon: this.props.pokemon, slotNumber: 1 }),
+            React.createElement(PokemonSlot_1.default, { ref: (s => { this.setState({ slot2: s }); }), pokemon: this.props.pokemon, slotNumber: 2 }),
+            React.createElement(PokemonSlot_1.default, { ref: (s => { this.setState({ slot3: s }); }), pokemon: this.props.pokemon, slotNumber: 3 }),
+            React.createElement(PokemonSlot_1.default, { ref: (s => { this.setState({ slot4: s }); }), pokemon: this.props.pokemon, slotNumber: 4 }),
+            React.createElement(PokemonSlot_1.default, { ref: (s => { this.setState({ slot5: s }); }), pokemon: this.props.pokemon, slotNumber: 5 }),
+            React.createElement(PokemonSlot_1.default, { ref: (s => { this.setState({ slot6: s }); }), pokemon: this.props.pokemon, slotNumber: 6 })));
         return content;
     }
 }
