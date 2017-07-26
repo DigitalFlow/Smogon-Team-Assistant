@@ -2,7 +2,7 @@ import * as React from "react";
 import StatOverview from "./StatOverview";
 import TeamBuilder from "./TeamBuilder";
 import Pokemon from "../model/pokemon";
-import { Navbar, Nav, NavItem, MenuItem, NavDropdown, Jumbotron } from "react-bootstrap";
+import { Well, Navbar, Nav, NavItem, MenuItem, NavDropdown, Jumbotron } from "react-bootstrap";
 import StatParser from "../domain/StatParser";
 
 export interface AppProps { }
@@ -70,24 +70,27 @@ export default class App extends React.PureComponent<AppProps, AppState> {
             }
         }
         else {
-            content = <Jumbotron>
-                <h1>No data loaded!</h1>
-                <p>For showing information, data from Smogon needs to be loaded.<br />
-                Head over to <a href="http://www.smogon.com/stats/2017-06/chaos/">Smogon stats</a>, download the stats file you'd like and load it.</p>
-                <h2>But which file to choose?</h2>
-                <h3>Gen</h3>
-                <p>The gen part of the file name represents the Pokemon Generation that those stats are for.<br/>
-                Gen 7 is for Sun / Moon, Gen 6 for ORAS / XY, and so on.</p>
-                <h3>Tier</h3>
-                <p>There are different Tiers, which are calculated by usage. The Smogon standard tier is OU.<br/>
-                If you don't care for tiers, choose AG, as this has no Pokemon banned.</p>
-                <h3>Baseline</h3>
-                <p>The baseline represents a rating of the players that the stats were gathered from.<br/>
-                The higher the base line, the better the players that contributed to those stats.<br />
-                Obviously, for determining movesets etc. you'll want the highest base line stats.
-                However those most often don't contain any Checks and Counters data, so if you want to analyze these,
-                choose 0 or 1500 baseline stats.</p>
-            </Jumbotron>;
+            content = 
+                <Well>
+                    <Jumbotron>
+                        <h1>No data loaded!</h1>
+                        <p>For showing information, data from Smogon needs to be loaded.<br />
+                        Head over to <a href="http://www.smogon.com/stats/2017-06/chaos/">Smogon stats</a>, download the stats file you'd like and load it.</p>
+                        <h2>But which file to choose?</h2>
+                        <h3>Gen</h3>
+                        <p>The gen part of the file name represents the Pokemon Generation that those stats are for.<br/>
+                        Gen 7 is for Sun / Moon, Gen 6 for ORAS / XY, and so on.</p>
+                        <h3>Tier</h3>
+                        <p>There are different Tiers, which are calculated by usage. The Smogon standard tier is OU.<br/>
+                        If you don't care for tiers, choose AG, as this has no Pokemon banned.</p>
+                        <h3>Baseline</h3>
+                        <p>The baseline represents a rating of the players that the stats were gathered from.<br/>
+                        The higher the base line, the better the players that contributed to those stats.<br />
+                        Obviously, for determining movesets etc. you'll want the highest base line stats.
+                        However those most often don't contain any Checks and Counters data, so if you want to analyze these,
+                        choose 0 or 1500 baseline stats.</p>
+                    </Jumbotron>
+                </Well>;
         }
 
         return (

@@ -9,7 +9,12 @@ export interface TeamBuilderProps {
  }
 
 class TeamBuilderState {
-    slots: Array<PokemonSlot>;
+    slot1: PokemonSlot;
+    slot2: PokemonSlot;
+    slot3: PokemonSlot;
+    slot4: PokemonSlot;
+    slot5: PokemonSlot;
+    slot6: PokemonSlot;
     showExport: boolean;
 }
 
@@ -18,7 +23,12 @@ export default class TeamBuilder extends React.PureComponent<TeamBuilderProps, T
         super(props);
 
         this.state = {
-            slots: new Array<PokemonSlot>(),
+            slot1: null,
+            slot2: null,
+            slot3: null,
+            slot4: null,
+            slot5: null,
+            slot6: null,
             showExport: false
         };
         
@@ -26,15 +36,23 @@ export default class TeamBuilder extends React.PureComponent<TeamBuilderProps, T
         this.resetAllSlots = this.resetAllSlots.bind(this);
         this.exportTeam = this.exportTeam.bind(this);
         this.close = this.close.bind(this);
+        this.getSlots = this.getSlots.bind(this);
+    }
+
+    getSlots(){
+        return [this.state.slot1, this.state.slot2, this.state.slot3, 
+            this.state.slot4, this.state.slot5, this.state.slot6];
     }
 
     proposeTeam() {
-        var currentTeam = this.state.slots.map(s => s.state.pokemon);
+        let slots = this.getSlots();
+
+        let currentTeam = slots.map(s => s.state.pokemon);
 
         var proposedTeam = TeamProposer.proposeByTeammateStats(currentTeam, this.props.pokemon);
 
-        for (let i = 0; i < this.state.slots.length; i++) {
-            let slot = this.state.slots[i];
+        for (let i = 0; i < slots.length; i++) {
+            let slot = slots[i];
 
             slot.setState({pokemon: proposedTeam[i]});
         }
@@ -49,19 +67,13 @@ export default class TeamBuilder extends React.PureComponent<TeamBuilderProps, T
     }
 
     resetAllSlots() {
-        this.state.slots.forEach(slot => {
+        this.getSlots().forEach(slot => {
             slot.setState({pokemon: null});
         });
     }
 
     render(){
-        var slots = [];
-
-        for (let i = 0; i < 6; i++) {
-            slots.push(<PokemonSlot ref={(slot) => this.state.slots.push(slot)} key={"Pokemon_Slot_" + i} slotNumber={i} pokemon={this.props.pokemon} />);
-        }
-
-        let teamExport = this.state.slots.map(slot => {
+        let teamExport = this.getSlots().map(slot => {
             if (!slot || !slot.state || !slot.state.pokemon) {
                return <p/>;
             }
@@ -117,7 +129,12 @@ export default class TeamBuilder extends React.PureComponent<TeamBuilderProps, T
                         <Button onClick={this.resetAllSlots} id="clearButton">Clear</Button>
                     </ButtonGroup>
                 </Well>
-                { slots }
+                    <PokemonSlot ref={(s => {this.setState({slot1: s})})} pokemon={this.props.pokemon} slotNumber={1} />
+                    <PokemonSlot ref={(s => {this.setState({slot2: s})})} pokemon={this.props.pokemon} slotNumber={2} />
+                    <PokemonSlot ref={(s => {this.setState({slot3: s})})} pokemon={this.props.pokemon} slotNumber={3} />
+                    <PokemonSlot ref={(s => {this.setState({slot4: s})})} pokemon={this.props.pokemon} slotNumber={4} />
+                    <PokemonSlot ref={(s => {this.setState({slot5: s})})} pokemon={this.props.pokemon} slotNumber={5} />
+                    <PokemonSlot ref={(s => {this.setState({slot6: s})})} pokemon={this.props.pokemon} slotNumber={6} />
             </div>);
 
         return content;
