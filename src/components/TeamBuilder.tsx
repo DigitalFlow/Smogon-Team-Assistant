@@ -1,11 +1,17 @@
 import * as React from "react";
-import { Modal, ButtonGroup, DropdownButton, Button, Well } from "react-bootstrap";
+import { MenuItem, Modal, ButtonGroup, DropdownButton, Button, Well } from "react-bootstrap";
 import Pokemon from "../model/Pokemon";
 import PokemonSlot from "./PokemonSlot";
 import TeamProposer from "../domain/TeamProposer";
 
 export interface TeamBuilderProps {
     pokemon: Map<string, Pokemon>;
+ }
+
+ enum ProposalStrategie {
+    ByTeamMate,
+    ByCounter,
+    Balanced
  }
 
 class TeamBuilderState {
@@ -16,6 +22,7 @@ class TeamBuilderState {
     slot5: PokemonSlot;
     slot6: PokemonSlot;
     showExport: boolean;
+    proposalStrategie: ProposalStrategie;
 }
 
 export default class TeamBuilder extends React.PureComponent<TeamBuilderProps, TeamBuilderState> {
@@ -29,7 +36,8 @@ export default class TeamBuilder extends React.PureComponent<TeamBuilderProps, T
             slot4: null,
             slot5: null,
             slot6: null,
-            showExport: false
+            showExport: false,
+            proposalStrategie: ProposalStrategie.ByTeamMate
         };
         
         this.proposeTeam = this.proposeTeam.bind(this);
@@ -49,9 +57,23 @@ export default class TeamBuilder extends React.PureComponent<TeamBuilderProps, T
 
         let currentTeam = slots.map(s => s.state.pokemon);
 
-        var proposedTeam = TeamProposer.proposeByTeammateStats(currentTeam, this.props.pokemon);
+        var proposedTeam = null;
+        
+        switch (this.state.proposalStrategie) {
+            case ProposalStrategie.ByTeamMate:
+                proposedTeam = TeamProposer.proposeByTeammate(currentTeam, this.props.pokemon);
+                break;
+            case ProposalStrategie.ByCounter:
+                proposedTeam = TeamProposer.proposeByCounter(currentTeam, this.props.pokemon);
+                break;
+            case ProposalStrategie.Balanced:
+                proposedTeam = TeamProposer.proposeBalanced(currentTeam, this.props.pokemon);
+                break;
+            default:
+                throw new Error("No strategie defined for " + this.state.proposalStrategie);
+        }
 
-        for (let i = 0; i < slots.length; i++) {
+        for (let i = 0; i < proposedTeam.length; i++) {
             let slot = slots[i];
 
             slot.setState({pokemon: proposedTeam[i]});
@@ -123,6 +145,11 @@ export default class TeamBuilder extends React.PureComponent<TeamBuilderProps, T
                 </Modal>
                 <Well>
                     <ButtonGroup>
+                        <DropdownButton title="Proposal Strategie" id="proposalStrategieDropdown">
+                            <MenuItem onClick={() => this.setState({proposalStrategie: ProposalStrategie.ByTeamMate})} eventKey="1">By Teammate</MenuItem>
+                            <MenuItem onClick={() => this.setState({proposalStrategie: ProposalStrategie.ByCounter})} eventKey="2">By Counter</MenuItem>
+                            <MenuItem onClick={() => this.setState({proposalStrategie: ProposalStrategie.Balanced})} eventKey="3">Balanced</MenuItem>
+                        </DropdownButton>
                         <Button onClick={this.proposeTeam} id="proposeTeamButton">Propose Team</Button>
                         <Button onClick={this.exportTeam} id="exportShowDownButton">Export to ShowDown</Button>
                         <Button onClick={this.resetAllSlots} id="clearButton">Clear</Button>
