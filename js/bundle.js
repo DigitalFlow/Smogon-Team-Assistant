@@ -21459,6 +21459,12 @@ const React = __webpack_require__(0);
 const react_bootstrap_1 = __webpack_require__(25);
 const PokemonSlot_1 = __webpack_require__(279);
 const TeamProposer_1 = __webpack_require__(292);
+var ProposalStrategie;
+(function (ProposalStrategie) {
+    ProposalStrategie[ProposalStrategie["ByTeamMate"] = 0] = "ByTeamMate";
+    ProposalStrategie[ProposalStrategie["ByCounter"] = 1] = "ByCounter";
+    ProposalStrategie[ProposalStrategie["Balanced"] = 2] = "Balanced";
+})(ProposalStrategie || (ProposalStrategie = {}));
 class TeamBuilderState {
 }
 class TeamBuilder extends React.PureComponent {
@@ -21471,7 +21477,8 @@ class TeamBuilder extends React.PureComponent {
             slot4: null,
             slot5: null,
             slot6: null,
-            showExport: false
+            showExport: false,
+            proposalStrategie: ProposalStrategie.ByTeamMate
         };
         this.proposeTeam = this.proposeTeam.bind(this);
         this.resetAllSlots = this.resetAllSlots.bind(this);
@@ -21486,8 +21493,21 @@ class TeamBuilder extends React.PureComponent {
     proposeTeam() {
         let slots = this.getSlots();
         let currentTeam = slots.map(s => s.state.pokemon);
-        var proposedTeam = TeamProposer_1.default.proposeByTeammateStats(currentTeam, this.props.pokemon);
-        for (let i = 0; i < slots.length; i++) {
+        var proposedTeam = null;
+        switch (this.state.proposalStrategie) {
+            case ProposalStrategie.ByTeamMate:
+                proposedTeam = TeamProposer_1.default.proposeByTeammate(currentTeam, this.props.pokemon);
+                break;
+            case ProposalStrategie.ByCounter:
+                proposedTeam = TeamProposer_1.default.proposeByCounter(currentTeam, this.props.pokemon);
+                break;
+            case ProposalStrategie.Balanced:
+                proposedTeam = TeamProposer_1.default.proposeBalanced(currentTeam, this.props.pokemon);
+                break;
+            default:
+                throw new Error("No strategie defined for " + this.state.proposalStrategie);
+        }
+        for (let i = 0; i < proposedTeam.length; i++) {
             let slot = slots[i];
             slot.setState({ pokemon: proposedTeam[i] });
         }
@@ -21559,6 +21579,10 @@ class TeamBuilder extends React.PureComponent {
                     React.createElement(react_bootstrap_1.Button, { onClick: this.close }, "Close"))),
             React.createElement(react_bootstrap_1.Well, null,
                 React.createElement(react_bootstrap_1.ButtonGroup, null,
+                    React.createElement(react_bootstrap_1.DropdownButton, { title: "Proposal Strategie", id: "proposalStrategieDropdown" },
+                        React.createElement(react_bootstrap_1.MenuItem, { onClick: () => this.setState({ proposalStrategie: ProposalStrategie.ByTeamMate }), eventKey: "1" }, "By Teammate"),
+                        React.createElement(react_bootstrap_1.MenuItem, { onClick: () => this.setState({ proposalStrategie: ProposalStrategie.ByCounter }), eventKey: "2" }, "By Counter"),
+                        React.createElement(react_bootstrap_1.MenuItem, { onClick: () => this.setState({ proposalStrategie: ProposalStrategie.Balanced }), eventKey: "3" }, "Balanced")),
                     React.createElement(react_bootstrap_1.Button, { onClick: this.proposeTeam, id: "proposeTeamButton" }, "Propose Team"),
                     React.createElement(react_bootstrap_1.Button, { onClick: this.exportTeam, id: "exportShowDownButton" }, "Export to ShowDown"),
                     React.createElement(react_bootstrap_1.Button, { onClick: this.resetAllSlots, id: "clearButton" }, "Clear"))),
@@ -23857,11 +23881,71 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const DataSorter_1 = __webpack_require__(84);
 var TeamProposer;
 (function (TeamProposer) {
-    function proposeByTeammateStats(team, pokemon) {
-        if (!team || !team.find(p => p !== null) || team.length === 0) {
-            // If no data entered, get the pokemon with the highest usage as starting point and proceed
-            team = DataSorter_1.default.sortByUsage(pokemon.values(), true).slice(0, 1);
-        }
+    function blockMega(name, proposedTeam) {
+        return name.includes("-Mega") &&
+            Array.from(proposedTeam.keys()).find(n => n.includes("-Mega"));
+    }
+    function createTeammateRanking(proposedTeam) {
+        let teamMateRanking = new Map();
+        proposedTeam.forEach((pokemon, name) => {
+            if (!pokemon) {
+                return;
+            }
+            let teamMembers = pokemon.teamMates;
+            if (!teamMembers) {
+                return;
+            }
+            for (let j = 0; j < teamMembers.length; j++) {
+                let teamMate = teamMembers[j];
+                let currentValue = 0;
+                if (proposedTeam.has(teamMate.name)) {
+                    continue;
+                }
+                if (blockMega(teamMate.name, proposedTeam)) {
+                    continue;
+                }
+                if (teamMateRanking.has(teamMate.name)) {
+                    currentValue = teamMateRanking.get(teamMate.name);
+                }
+                teamMateRanking.set(teamMate.name, currentValue + teamMate.usageRate);
+            }
+        });
+        return teamMateRanking;
+    }
+    function createCounterRanking(proposedTeam, countersDone) {
+        let counterRanking = new Map();
+        proposedTeam.forEach((pokemon, name) => {
+            if (!pokemon) {
+                return;
+            }
+            let counters = pokemon.checks_And_Counters;
+            if (!counters) {
+                return;
+            }
+            for (let j = 0; j < counters.length; j++) {
+                let counter = counters[j];
+                let currentValue = 0;
+                if (countersDone.indexOf(counter.name) !== -1) {
+                    continue;
+                }
+                if (counterRanking.has(counter.name)) {
+                    currentValue = counterRanking.get(counter.name);
+                }
+                counterRanking.set(counter.name, currentValue + counter.usageRate);
+            }
+        });
+        return counterRanking;
+    }
+    function findHighestScore(ranking) {
+        let bestMember = null;
+        ranking.forEach((value, key) => {
+            if (!bestMember || bestMember.value < value) {
+                bestMember = { name: key, value: value };
+            }
+        });
+        return bestMember;
+    }
+    function createInitialProposedTeam(team) {
         let proposedTeam = new Map();
         for (let i = 0; i < team.length; i++) {
             let pokemon = team[i];
@@ -23870,43 +23954,93 @@ var TeamProposer;
             }
             proposedTeam.set(pokemon.name, pokemon);
         }
+        return proposedTeam;
+    }
+    function teamOrFallback(team, pokemon) {
+        if (!team || !team.find(p => p !== null) || team.length === 0) {
+            // If no data entered, get the pokemon with the highest usage as starting point and proceed
+            return DataSorter_1.default.sortByUsage(pokemon.values(), true).slice(0, 1);
+        }
+        return team;
+    }
+    function proposeByTeammate(team, pokemon) {
+        team = teamOrFallback(team, pokemon);
+        let proposedTeam = createInitialProposedTeam(team);
         do {
-            let teamMateRanking = new Map();
-            proposedTeam.forEach((pokemon, name) => {
-                if (!pokemon) {
-                    return;
-                }
-                let teamMembers = pokemon.teamMates;
-                if (!teamMembers) {
-                    return;
-                }
-                for (let j = 0; j < teamMembers.length; j++) {
-                    let teamMate = teamMembers[j];
-                    let currentValue = 0;
-                    if (proposedTeam.has(teamMate.name)) {
-                        continue;
-                    }
-                    if (teamMate.name.includes("-Mega") &&
-                        Array.from(proposedTeam.keys()).find(n => n.includes("-Mega"))) {
-                        continue;
-                    }
-                    if (teamMateRanking.has(teamMate.name)) {
-                        currentValue = teamMateRanking.get(teamMate.name);
-                    }
-                    teamMateRanking.set(teamMate.name, currentValue + teamMate.usageRate);
-                }
-            });
-            let bestMember = null;
-            teamMateRanking.forEach((value, key) => {
-                if (!bestMember || bestMember.value < value) {
-                    bestMember = { name: key, value: value };
-                }
-            });
+            let teamMateRanking = createTeammateRanking(proposedTeam);
+            let bestMember = findHighestScore(teamMateRanking);
             proposedTeam.set(bestMember.name, pokemon.get(bestMember.name));
         } while (proposedTeam.size < 6);
         return Array.from(proposedTeam.values());
     }
-    TeamProposer.proposeByTeammateStats = proposeByTeammateStats;
+    TeamProposer.proposeByTeammate = proposeByTeammate;
+    function proposeByCounter(team, pokemon) {
+        team = teamOrFallback(team, pokemon);
+        let proposedTeam = createInitialProposedTeam(team);
+        let countersDone = new Array();
+        do {
+            let counterRanking = createCounterRanking(proposedTeam, countersDone);
+            let mostDangerousCounter = findHighestScore(counterRanking);
+            if (!mostDangerousCounter) {
+                return Array.from(proposedTeam.values());
+            }
+            countersDone.push(mostDangerousCounter.name);
+            var counter = pokemon.get(mostDangerousCounter.name);
+            var mateByCounter = null;
+            for (let k = 0; counter.checks_And_Counters && k < counter.checks_And_Counters.length; k++) {
+                let counterPokemon = counter.checks_And_Counters[k];
+                if (proposedTeam.has(counterPokemon.name)) {
+                    continue;
+                }
+                if (blockMega(counterPokemon.name, proposedTeam)) {
+                    continue;
+                }
+                // Only choose strongest counter, they are sorted desc by counter rate
+                mateByCounter = pokemon.get(counterPokemon.name);
+                break;
+            }
+            proposedTeam.set(mateByCounter.name, mateByCounter);
+        } while (proposedTeam.size < 6);
+        return Array.from(proposedTeam.values());
+    }
+    TeamProposer.proposeByCounter = proposeByCounter;
+    function proposeBalanced(team, pokemon) {
+        team = teamOrFallback(team, pokemon);
+        let proposedTeam = createInitialProposedTeam(team);
+        let countersDone = new Array();
+        do {
+            let counterRanking = createCounterRanking(proposedTeam, countersDone);
+            let mostDangerousCounter = findHighestScore(counterRanking);
+            if (!mostDangerousCounter) {
+                return Array.from(proposedTeam.values());
+            }
+            countersDone.push(mostDangerousCounter.name);
+            var counter = pokemon.get(mostDangerousCounter.name);
+            let balancedCounters = createCounterRanking(new Map([[counter.name, counter]]), Array.from(proposedTeam.keys()));
+            let teamMateRanking = createTeammateRanking(proposedTeam);
+            let balancedRanking = new Map();
+            balancedCounters.forEach((score, pokemon) => {
+                if (!pokemon) {
+                    return;
+                }
+                if (blockMega(pokemon, proposedTeam)) {
+                    return;
+                }
+                let balancedScore = score;
+                if (teamMateRanking.has(pokemon)) {
+                    balancedScore += teamMateRanking.get(pokemon);
+                }
+                balancedRanking.set(pokemon, balancedScore);
+            });
+            let bestBalancedMate = findHighestScore(balancedRanking);
+            if (!bestBalancedMate) {
+                return Array.from(proposedTeam.values());
+            }
+            proposedTeam.set(bestBalancedMate.name, pokemon.get(bestBalancedMate.name));
+        } while (proposedTeam.size < 6);
+        return Array.from(proposedTeam.values());
+    }
+    TeamProposer.proposeBalanced = proposeBalanced;
 })(TeamProposer || (TeamProposer = {}));
 exports.default = TeamProposer;
 
