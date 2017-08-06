@@ -19,6 +19,31 @@ module DataSorter {
         });
     }
 
+    export function sortByNumber(data: Map<string, number>, descending?: boolean) {
+        var multiplier = descending ? -1 : 1;
+        var array = Array.from(data.keys());
+
+        var sorted = array.slice(0).sort((a, b) => { 
+            if (data.get(a) < data.get(b)) {
+                return -1 * multiplier;
+            }
+
+            if (data.get(a) > data.get(b)) {
+                return 1 * multiplier;
+            }
+
+            return 0;
+        });
+
+        let map = new Map<string, number>();
+
+        for(let i = 0; i < sorted.length; i++){
+            map.set(sorted[i], data.get(sorted[i]));
+        }
+
+        return map;
+    }
+
     export function sortByViabilityCeiling<T extends IterableIterator<Pokemon>>(data: T, descending?: boolean) {
         var multiplier = descending ? -1 : 1;
         var array = Array.from(data);

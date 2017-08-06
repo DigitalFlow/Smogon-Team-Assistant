@@ -43,7 +43,7 @@ module TeamProposer {
         return teamMateRanking;
     }
 
-    function createCounterRanking(proposedTeam: Map<string, Pokemon>, countersDone: Array<string>){
+    export function createCounterRanking(proposedTeam: Map<string, Pokemon>, countersDone: Array<string>){
         let counterRanking = new Map<string, number>();
 
             proposedTeam.forEach((pokemon, name) => {

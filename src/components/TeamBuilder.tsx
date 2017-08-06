@@ -1,8 +1,9 @@
 import * as React from "react";
-import { MenuItem, Modal, ButtonGroup, DropdownButton, Button, Well } from "react-bootstrap";
+import { MenuItem, Modal, ModalBody, ButtonGroup, DropdownButton, Button, Well } from "react-bootstrap";
 import Pokemon from "../model/Pokemon";
 import PokemonSlot from "./PokemonSlot";
 import TeamProposer from "../domain/TeamProposer";
+import DataSorter from "../domain/DataSorter";
 
 export interface TeamBuilderProps {
     pokemon: Map<string, Pokemon>;
@@ -21,7 +22,9 @@ class TeamBuilderState {
     slot4: PokemonSlot;
     slot5: PokemonSlot;
     slot6: PokemonSlot;
+    teamBody: ModalBody;
     showExport: boolean;
+    showCounters: boolean;
     proposalStrategie: ProposalStrategie;
 }
 
@@ -36,13 +39,16 @@ export default class TeamBuilder extends React.PureComponent<TeamBuilderProps, T
             slot4: null,
             slot5: null,
             slot6: null,
+            teamBody: null,
             showExport: false,
+            showCounters: false,
             proposalStrategie: ProposalStrategie.ByTeamMate
         };
         
         this.proposeTeam = this.proposeTeam.bind(this);
         this.resetAllSlots = this.resetAllSlots.bind(this);
         this.exportTeam = this.exportTeam.bind(this);
+        this.showCounters = this.showCounters.bind(this);
         this.close = this.close.bind(this);
         this.getSlots = this.getSlots.bind(this);
     }
@@ -84,8 +90,12 @@ export default class TeamBuilder extends React.PureComponent<TeamBuilderProps, T
         this.setState({showExport: true})
     }
 
+    showCounters(){
+        this.setState({showCounters: true});
+    }
+
     close() {
-        this.setState({ showExport: false });
+        this.setState({ showExport: false, showCounters: false });
     }
 
     resetAllSlots() {
@@ -95,10 +105,15 @@ export default class TeamBuilder extends React.PureComponent<TeamBuilderProps, T
     }
 
     render(){
-        let teamExport = this.getSlots().map(slot => {
+        let slots = this.getSlots();
+        let team = new Map<string, Pokemon>();
+
+        let teamExport = slots.map(slot => {
             if (!slot || !slot.state || !slot.state.pokemon) {
                return <p/>;
             }
+
+            team.set(slot.state.pokemon.name, slot.state.pokemon);
 
             let memberConfig = slot.state.form.state;
             let nature = null;
@@ -130,14 +145,30 @@ export default class TeamBuilder extends React.PureComponent<TeamBuilderProps, T
             </p>);
         });
 
+        let counterRanking = DataSorter.sortByNumber(TeamProposer.createCounterRanking(team, []), true);
+        let counterText = Array.from(counterRanking.keys()).slice(0, 10).map((name) => {
+            return <p>{`${name}: ${counterRanking.get(name)}`}<br/></p>;
+        }) || <p/>;
+
         var content =
             (<div>
                 <Modal show={this.state.showExport} onHide={this.close}>
                     <Modal.Header closeButton>
                         <Modal.Title>Showdown Export</Modal.Title>
                     </Modal.Header>
-                    <Modal.Body>
+                    <Modal.Body ref={b => {this.setState({teamBody: b})}}>
                         {teamExport}
+                    </Modal.Body>
+                    <Modal.Footer>
+                        <Button onClick={this.close}>Close</Button>
+                    </Modal.Footer>
+                </Modal>
+                <Modal show={this.state.showCounters} onHide={this.close}>
+                    <Modal.Header closeButton>
+                        <Modal.Title>Counters to your team</Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body>
+                        {counterText}
                     </Modal.Body>
                     <Modal.Footer>
                         <Button onClick={this.close}>Close</Button>
@@ -152,6 +183,7 @@ export default class TeamBuilder extends React.PureComponent<TeamBuilderProps, T
                         </DropdownButton>
                         <Button onClick={this.proposeTeam} id="proposeTeamButton">Propose Team</Button>
                         <Button onClick={this.exportTeam} id="exportShowDownButton">Export to ShowDown</Button>
+                        <Button onClick={this.showCounters} id="showCountersButton">Show Counters</Button>
                         <Button onClick={this.resetAllSlots} id="clearButton">Clear</Button>
                     </ButtonGroup>
                 </Well>
