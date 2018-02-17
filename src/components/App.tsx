@@ -1,7 +1,7 @@
 import * as React from "react";
 import StatOverview from "./StatOverview";
 import TeamBuilder from "./TeamBuilder";
-import Pokemon from "../model/pokemon";
+import Pokemon from "../model/Pokemon";
 import { Well, Navbar, Nav, NavItem, MenuItem, NavDropdown, Jumbotron } from "react-bootstrap";
 import StatParser from "../domain/StatParser";
 

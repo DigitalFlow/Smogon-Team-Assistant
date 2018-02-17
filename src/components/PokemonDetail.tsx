@@ -1,5 +1,5 @@
 import * as React from "react";
-import Pokemon from "../Model/Pokemon";
+import Pokemon from "../model/Pokemon";
 import { Button, Panel, Grid, Row, Col, Tabs, Tab, Table } from "react-bootstrap";
 import IRankableView from "./IRankableView";
 import IRankable from "../domain/IRankable";
